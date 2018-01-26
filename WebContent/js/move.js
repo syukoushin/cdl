@@ -30,6 +30,9 @@ function goInvoice(){
 function goIdCard(){
 	window.location="../manage/IdCard_toList.do";
 };
+function goBusinessLicense(){
+	window.location="../manage/BusinessLicense_toList.do";
+};
 function goEnginner(){
 	window.location="../manage/User_toList.do";
 };

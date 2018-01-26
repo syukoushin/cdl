@@ -3,17 +3,17 @@
 	<div class="slide_screen">
 		<form>
 			<p>
-				<span class="siyuannormal">身份证号:</span>
+				<span class="siyuannormal">注册号:</span>
 				<span>
-					<input id="idCardNo" type="text" placeholder="请输入" class="text_input siyuannormal" style='background:url('');'/>
+					<input id="regNumber" type="text" placeholder="请输入" class="text_input siyuannormal" style='background:url('');'/>
 				</span>
-				<span class="siyuannormal">姓名:</span>
+				<span class="siyuannormal">单位名称:</span>
 				<span>
 					<input id="name" type="text" placeholder="请输入" class="text_input siyuannormal" style='background:url('');'/>
 					<input type="button" onclick="getPageList(1)" value="查询" class="btn_input" />
 				</span>
 				<span>
-					<a href="javascript:void(0)" style="margin-left:5px; float:left;" id="search_pic" onclick="javascript:down('${base}/manage/IdCard_exportExcel.do');">
+					<a href="javascript:void(0)" style="margin-left:5px; float:left;" id="search_pic" onclick="javascript:down('${base}/manage/BusinessLicense_exportExcel.do');">
 	                    <span class='outchu' style='color: #FFFFFF;'>导出</span>
                	 	</a>
 				</span>
@@ -24,7 +24,7 @@
 		<table id="disTable" border="0" class="ranking_table">
 			  <thead >
 			    <tr>
-			      <th>身份证号</th><th>姓名</th><th>性别</th><th>民族</th><th>操作</th>
+			      <th>注册号</th><th>社会信用代码</th><th>单位名称</th><th>法定代表人</th><th>操作</th>
 			    </tr>
 			  </thead>
 		</table>
@@ -43,20 +43,20 @@
 	<tbody style="font-family:'微软雅黑';">
 		{{each(i,item) result}}
 			<tr style="font-family:'微软雅黑';">
-                <td class='first'>{{= item.cardNo}}</td>
+                <td class='first'>{{= item.regNumber}}</td>
+                <td>{{= item.creditCode}}</td>
                 <td>{{= item.name}}</td>
-                <td>{{= item.sex}}</td>
-                <td>{{= item.ethnic}}</td>
+                <td>{{= item.incorporator}}</td>
                 <td>
-				<a title="详情" href="javascript:void(0)" onclick="goIdCardDetail('{{= item.id}}')" class="btn_detail choice hover_a" ><img src="/cdl/images/cms/small_icon_10.png" style="border-radius:0; width:13px; height:13px;"></a>
+				<a title="详情" href="javascript:void(0)" onclick="goBusinessLicenseDetail('{{= item.id}}')" class="btn_detail choice hover_a" ><img src="/cdl/images/cms/small_icon_10.png" style="border-radius:0; width:13px; height:13px;"></a>
                 </td>
             </tr>
 		{{/each}}
 	<tbody>
 </script>
 <script>
-function goIdCardDetail(id){
-	window.location ="../manage/IdCard_toIdCardDetail.do?id="+id;
+function goBusinessLicenseDetail(id){
+	window.location ="../manage/BusinessLicense_toBusinessLicenseDetail.do?id="+id;
 };
 function getPageList(pageNo){
 	var param ={};
@@ -68,14 +68,14 @@ function getPageList(pageNo){
 }
 function getParam(){
 	var param ={};
-	param["entity.cardNo"] = $("#idCardNo").val();
+	param["entity.regNumber"] = $("#regNumber").val();
 	param["entity.name"] = $("#name").val();
 	return param;
 }
 function getOrderData(param){
         $.ajax({
             type: "post",
-            url: "${base}/manage/IdCard_ajaxIdCardList.do",
+            url: "${base}/manage/BusinessLicense_ajaxBusinessLicenseList.do",
             data: param,
             dataType : 'json',
             success: function (json) {

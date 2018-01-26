@@ -3,14 +3,8 @@ package com.ibm.cdl.portal.action;
 import com.ibm.cdl.attachment.domain.Attachment;
 import com.ibm.cdl.attachment.service.AttachmentService;
 import com.ibm.cdl.datamap.constants.Constants;
-import com.ibm.cdl.manage.pojo.IdCard;
-import com.ibm.cdl.manage.pojo.Invoice;
-import com.ibm.cdl.manage.pojo.License;
-import com.ibm.cdl.manage.pojo.User;
-import com.ibm.cdl.manage.service.IdCardService;
-import com.ibm.cdl.manage.service.InvoiceService;
-import com.ibm.cdl.manage.service.LicenseService;
-import com.ibm.cdl.manage.service.UserService;
+import com.ibm.cdl.manage.pojo.*;
+import com.ibm.cdl.manage.service.*;
 import com.ibm.core.action.DefaultBaseAction;
 import com.ibm.core.orm.Page;
 import com.ibm.core.util.DateJsonValueProcessor;
@@ -41,6 +35,8 @@ public class PortalAction extends DefaultBaseAction {
 	private InvoiceService invoiceService;
 	@Autowired
 	private IdCardService idCardService;
+	@Autowired
+	private BusinessLicenseService businessLicenseService;
 	@Autowired
 	private UserService userService;
 	private File[] attachFile;                              //附件上传对象
@@ -210,6 +206,43 @@ public class PortalAction extends DefaultBaseAction {
 		return null;
 	}
 
+	/**
+	 * 添加营业执照信息
+	 * @return
+	 */
+	public String addBusinessLicense(){
+		JSONObject json = new JSONObject();
+		try{
+			String name = getParameter("name");
+			String creditCode = getParameter("creditCode");
+			String regNumber = getParameter("regNumber");
+			String address = getParameter("address");
+			String endDate = getParameter("endDate");
+			String incorporator = getParameter("incorporator");
+			String createUser = getParameter("createUser");
+			BusinessLicense businessLicense = new BusinessLicense();
+			businessLicense.setName(name);
+			businessLicense.setCreditCode(creditCode);
+			businessLicense.setRegNumber(regNumber);
+			businessLicense.setAddress(address);
+			businessLicense.setEndDate(endDate);
+			businessLicense.setIncorporator(incorporator);
+			businessLicense.setCreateUser(createUser);
+			businessLicenseService.addEntity(businessLicense);
+			json.put("optSts", "0");
+			json.put("objId", businessLicense.getId());
+			json.put("optMsg", "成功");
+
+		}catch(Exception e){
+			e.printStackTrace();
+			json.put("optSts", "1");
+			json.put("optMsg", "添加失败");
+		}finally{
+			this.sendResponseMessage(json.toString());
+		}
+		return null;
+	}
+
     /**
      * 获取分页历史记录
      * @return
@@ -267,7 +300,18 @@ public class PortalAction extends DefaultBaseAction {
 				json.put("optMsg", "请求成功");
     			
     		} else if(Constants.SHOW_TYPE_BUSINESS.equals(type)){
-    			
+				BusinessLicense entity = new BusinessLicense();
+				entity.setCreateUser(userCode);
+				Page<BusinessLicense> page = new Page<BusinessLicense>();
+				page.setPageNo(pageNo);
+				page.setPageSize(pageSize);
+				Page<BusinessLicense> result = businessLicenseService.findPageForClient(entity, page);
+				json.put("optSts", "0");
+				JsonConfig config = new JsonConfig();
+				config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy/MM/dd hh:mm:ss"));
+				JSONObject resJson =  JSONObject.fromObject(result, config);
+				json.put("data", resJson);
+				json.put("optMsg", "请求成功");
     		} else {
     			json.put("optSts", "2");
         		json.put("optMsg", "参数错误");

@@ -1,10 +1,10 @@
 package com.ibm.cdl.manage.service.impl;
 
 import com.ibm.cdl.datamap.constants.Constants;
-import com.ibm.cdl.manage.dao.IdCardDao;
-import com.ibm.cdl.manage.pojo.IdCard;
+import com.ibm.cdl.manage.dao.BusinessLicenseDao;
+import com.ibm.cdl.manage.pojo.BusinessLicense;
 import com.ibm.cdl.manage.pojo.User;
-import com.ibm.cdl.manage.service.IdCardService;
+import com.ibm.cdl.manage.service.BusinessLicenseService;
 import com.ibm.cdl.manage.service.UserService;
 import com.ibm.core.orm.Page;
 import org.apache.commons.beanutils.BeanUtils;
@@ -17,12 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service("idCardService")
-public class IdCardServiceImpl implements IdCardService {
+@Service("businessLicenseService")
+public class BusinessLicenseServiceImpl implements BusinessLicenseService {
 	
 
 	@Autowired
-	private IdCardDao idCardDao;
+	private BusinessLicenseDao businessLicenseDao;
 
 	@Autowired
 	private  UserService userService;
@@ -33,42 +33,43 @@ public class IdCardServiceImpl implements IdCardService {
 	 * @param page
 	 * @return
 	 */
-	public Page<IdCard> findPageForClient(IdCard entity, Page<IdCard> page) {
+	public Page<BusinessLicense> findPageForClient(BusinessLicense entity, Page<BusinessLicense> page) {
 		StringBuilder hql = new StringBuilder();
 		Map<String,Object> pMap = new HashMap<String,Object>();
 
 		hql.append("select l.NAME as name,");
 		hql.append ("l.ID as id, ");
-		hql.append ("l.CARD_NO as cardNo, ");
+		hql.append ("l.REG_NUMBER as regNumber, ");
 		hql.append ("l.ADDRESS as address,");
-		hql.append ("l.SEX as sex,");
-		hql.append ("l.ETHNIC as ethnic,");
+		hql.append ("l.CREDIT_CODE as creditCode,");
+		hql.append ("l.INCORPORATOR as incorporator,");
+		hql.append ("l.END_DATE as endDate,");
 		hql.append ("l.CREATE_USER as createUser,");
 		hql.append ("l.CREATE_TIME as createTime");
 		hql.append (" from ");
 		
 		StringBuilder where = new StringBuilder();
-		where.append(" id_card l  where 1 = 1 ");
+		where.append(" business_license l  where 1 = 1 ");
 
-		// cardNo不为空的场合
-		if( entity.getCardNo() != null && !"".equals(entity.getCardNo())){
-			where.append(" and l.CARD_NO= :cardNo");
-			pMap.put("cardNo", entity.getCardNo());
+		// 信用代码不为空的场合
+		if( entity.getCreditCode() != null && !"".equals(entity.getCreditCode())){
+			where.append(" and l.CREDIT_CODE= :creditCode");
+			pMap.put("creditCode", entity.getCreditCode());
 		}
-		// 姓名
+		// 单位名称不为空的场合
 		if(entity.getName() != null && !"".equals(entity.getName())){
 			where.append(" and l.NAME like :name");
 			pMap.put("name", "%"+entity.getName()+"%");
 		}
-		// 性别
-		if(entity.getSex() != null && !"".equals(entity.getSex())){
-			where.append(" and l.SEX =:sex");
-			pMap.put("sex", entity.getSex());
+		// 注册码不为空的场合
+		if(entity.getRegNumber() != null && !"".equals(entity.getRegNumber())){
+			where.append(" and l.REG_NUMBER =:regNumber");
+			pMap.put("regNumber", entity.getRegNumber());
 		}
-		// 民族
-		if(entity.getEthnic() != null && !"".equals(entity.getEthnic())){
-			where.append( " and l.ETHNIC  = :ethnic");
-			pMap.put("ethnic",entity.getEthnic());
+		// 法人不为空的场合
+		if(entity.getIncorporator() != null && !"".equals(entity.getIncorporator())){
+			where.append( " and l.INCORPORATOR  like :incorporator");
+			pMap.put("incorporator","%"+entity.getIncorporator()+"%");
 		}
 		// 创建人
 		if(entity.getCreateUser() != null && !"".equals(entity.getCreateUser())){
@@ -86,11 +87,11 @@ public class IdCardServiceImpl implements IdCardService {
 				.append(",")
 				.append(page.getPageSize())
 				.toString();
-		Query queryList = idCardDao.getSession().createSQLQuery(querySqlString);
+		Query queryList = businessLicenseDao.getSession().createSQLQuery(querySqlString);
 		for(Map.Entry<String, Object> p : pMap.entrySet()){
 			queryList.setParameter(p.getKey(), p.getValue());
 		}
-		queryList.setResultTransformer(Transformers.aliasToBean(IdCard.class));
+		queryList.setResultTransformer(Transformers.aliasToBean(BusinessLicense.class));
 		List<User> result = queryList.list();
 		int start = Page.getStartOfPage(page.getPageNo(), page.getPageSize());
 		Page.setPageValue(page, start, 0, result);
@@ -104,42 +105,48 @@ public class IdCardServiceImpl implements IdCardService {
 	 * @param currentUser
 	 * @return
 	 */
-	public Page<IdCard> findPage(IdCard entity, Page<IdCard> page,User currentUser) {
+	public Page<BusinessLicense> findPage(BusinessLicense entity, Page<BusinessLicense> page,User currentUser) {
 		StringBuilder hql = new StringBuilder();
 		Map<String,Object> pMap = new HashMap<String,Object>();
 
 		hql.append("select l.NAME as name,");
 		hql.append ("l.ID as id, ");
-		hql.append ("l.CARD_NO as cardNo, ");
+		hql.append ("l.REG_NUMBER as regNumber, ");
 		hql.append ("l.ADDRESS as address,");
-		hql.append ("l.SEX as sex,");
-		hql.append ("l.ETHNIC as ethnic,");
+		hql.append ("l.CREDIT_CODE as creditCode,");
+		hql.append ("l.INCORPORATOR as incorporator,");
+		hql.append ("l.END_DATE as endDate,");
 		hql.append ("l.CREATE_USER as createUser,");
 		hql.append ("l.CREATE_TIME as createTime");
 		hql.append (" from ");
 		
 		StringBuilder where = new StringBuilder();
-		where.append(" id_card l left join user u on l.CREATE_USER = u.USER_CODE  where 1 = 1 ");
-		// cardno不为空的场合
-		if( entity.getCardNo() != null && !"".equals(entity.getCardNo())){
-			where.append(" and l.CARD_NO= :cardNo");
-			pMap.put("cardNo", entity.getCardNo());
+		where.append(" business_license l left join user u on l.CREATE_USER = u.USER_CODE  where 1 = 1 ");
+
+		// 信用代码不为空的场合
+		if( entity.getCreditCode() != null && !"".equals(entity.getCreditCode())){
+			where.append(" and l.CREDIT_CODE= :creditCode");
+			pMap.put("creditCode", entity.getCreditCode());
 		}
-		// 姓名
+		// 单位名称不为空的场合
 		if(entity.getName() != null && !"".equals(entity.getName())){
 			where.append(" and l.NAME like :name");
 			pMap.put("name", "%"+entity.getName()+"%");
 		}
-
-		// 性别
-		if(entity.getSex() != null && !"".equals(entity.getSex())){
-			where.append(" and l.SEX =:sex");
-			pMap.put("sex", entity.getSex());
+		// 注册码不为空的场合
+		if(entity.getRegNumber() != null && !"".equals(entity.getRegNumber())){
+			where.append(" and l.REG_NUMBER =:regNumber");
+			pMap.put("regNumber", entity.getRegNumber());
 		}
-		// 民族
-		if(entity.getEthnic() != null && !"".equals(entity.getEthnic())){
-			where.append( " and l.ETHNIC  = :ethnic");
-			pMap.put("ethnic",entity.getEthnic());
+		// 法人不为空的场合
+		if(entity.getIncorporator() != null && !"".equals(entity.getIncorporator())){
+			where.append( " and l.INCORPORATOR  like :incorporator");
+			pMap.put("incorporator","%"+entity.getIncorporator()+"%");
+		}
+		// 创建人
+		if(entity.getCreateUser() != null && !"".equals(entity.getCreateUser())){
+			where.append(" and l.CREATE_USER = :createUser");
+			pMap.put("createUser",entity.getCreateUser());
 		}
 		
 		// 判断创建人
@@ -162,7 +169,7 @@ public class IdCardServiceImpl implements IdCardService {
 		countSql.append(where.toString());
 		
 		// 计算总条数
-		Query query = idCardDao.getSession().createSQLQuery(countSql.toString());
+		Query query = businessLicenseDao.getSession().createSQLQuery(countSql.toString());
 		for(Map.Entry<String, Object> p : pMap.entrySet()){
 			query.setParameter(p.getKey(), p.getValue());
 		}
@@ -174,29 +181,43 @@ public class IdCardServiceImpl implements IdCardService {
 				.append(",")
 				.append(page.getPageSize())
 				.toString();
-		Query queryList = idCardDao.getSession().createSQLQuery(querySqlString);
+		Query queryList = businessLicenseDao.getSession().createSQLQuery(querySqlString);
 		for(Map.Entry<String, Object> p : pMap.entrySet()){
 			queryList.setParameter(p.getKey(), p.getValue());
 		}
-		queryList.setResultTransformer(Transformers.aliasToBean(IdCard.class));
+		queryList.setResultTransformer(Transformers.aliasToBean(BusinessLicense.class));
 		List<User> result = queryList.list();
 		int start = Page.getStartOfPage(page.getPageNo(), page.getPageSize());
 		Page.setPageValue(page, start, totalCount, result);
 		return page;
 	}
-	
-	public void addEntity(IdCard entity) {
-		idCardDao.save(entity);
+
+	/**
+	 * 添加 实体
+	 * @param entity
+	 */
+	public void addEntity(BusinessLicense entity) {
+		businessLicenseDao.save(entity);
 	}
 
+	/**
+	 * 根据id删除 实体
+	 * @param ids
+	 */
 	public void delEntity(String ids) {
-		idCardDao.delete(ids);
+		businessLicenseDao.delete(ids);
 	}
 
-	public IdCard findEntityById(String id) throws Exception {
-		IdCard temp = idCardDao.findUniqueBy("id", id);
+	/**
+	 * 根据id查询 详细信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public BusinessLicense findEntityById(String id) throws Exception {
+		BusinessLicense temp = businessLicenseDao.findUniqueBy("id", id);
 		User u = userService.queryUserByLoginName(temp.getCreateUser());
-		IdCard re = new IdCard();
+		BusinessLicense re = new BusinessLicense();
 		BeanUtils.copyProperties(re, temp);
 		re.setCreateUser(u.getUserName());
 		return re;
@@ -208,42 +229,48 @@ public class IdCardServiceImpl implements IdCardService {
 	 * @param currentUser
 	 * @return
 	 */
-	public List<IdCard> findListBy(IdCard entity,User currentUser) {
+	public List<BusinessLicense> findListBy(BusinessLicense entity,User currentUser) {
 		StringBuilder hql = new StringBuilder();
 		Map<String,Object> pMap = new HashMap<String,Object>();
 
 		hql.append("select l.NAME as name,");
 		hql.append ("l.ID as id, ");
-		hql.append ("l.CARD_NO as cardNo, ");
+		hql.append ("l.REG_NUMBER as regNumber, ");
 		hql.append ("l.ADDRESS as address,");
-		hql.append ("l.SEX as sex,");
-		hql.append ("l.ETHNIC as ethnic,");
+		hql.append ("l.CREDIT_CODE as creditCode,");
+		hql.append ("l.INCORPORATOR as incorporator,");
+		hql.append ("l.END_DATE as endDate,");
 		hql.append ("l.CREATE_USER as createUser,");
 		hql.append ("l.CREATE_TIME as createTime");
 		hql.append (" from ");
 
 		StringBuilder where = new StringBuilder();
-		where.append(" id_card l left join user u on l.CREATE_USER = u.USER_CODE  where 1 = 1 ");
+		where.append(" business_license l left join user u on l.CREATE_USER = u.USER_CODE  where 1 = 1 ");
 
-		// cardno不为空的场合
-		if( entity.getCardNo() != null && !"".equals(entity.getCardNo())){
-			where.append(" and l.CARD_NO= :cardNo");
-			pMap.put("cardNo", entity.getCardNo());
+		// 信用代码不为空的场合
+		if( entity.getCreditCode() != null && !"".equals(entity.getCreditCode())){
+			where.append(" and l.CREDIT_CODE= :creditCode");
+			pMap.put("creditCode", entity.getCreditCode());
 		}
-		// 姓名
+		// 单位名称不为空的场合
 		if(entity.getName() != null && !"".equals(entity.getName())){
 			where.append(" and l.NAME like :name");
 			pMap.put("name", "%"+entity.getName()+"%");
 		}
-		// 性别
-		if(entity.getSex() != null && !"".equals(entity.getSex())){
-			where.append(" and l.SEX =:sex");
-			pMap.put("sex", entity.getSex());
+		// 注册码不为空的场合
+		if(entity.getRegNumber() != null && !"".equals(entity.getRegNumber())){
+			where.append(" and l.REG_NUMBER =:regNumber");
+			pMap.put("regNumber", entity.getRegNumber());
 		}
-		// 民族
-		if(entity.getEthnic() != null && !"".equals(entity.getEthnic())){
-			where.append( " and l.ETHNIC  = :ethnic");
-			pMap.put("ethnic",entity.getEthnic());
+		// 法人不为空的场合
+		if(entity.getIncorporator() != null && !"".equals(entity.getIncorporator())){
+			where.append( " and l.INCORPORATOR  like :incorporator");
+			pMap.put("incorporator","%"+entity.getIncorporator()+"%");
+		}
+		// 创建人
+		if(entity.getCreateUser() != null && !"".equals(entity.getCreateUser())){
+			where.append(" and l.CREATE_USER = :createUser");
+			pMap.put("createUser",entity.getCreateUser());
 		}
 
 
@@ -264,11 +291,11 @@ public class IdCardServiceImpl implements IdCardService {
 		StringBuilder order = new StringBuilder();
 		order.append(" order by l.CREATE_TIME desc");
 		
-		Query query = idCardDao.createSqlQuery(hql.append(where).append(order).toString(), pMap);
+		Query query = businessLicenseDao.createSqlQuery(hql.append(where).append(order).toString(), pMap);
 		for(Map.Entry<String, Object> p : pMap.entrySet()){
 			query.setParameter(p.getKey(), p.getValue());
 		}
-		query.setResultTransformer(Transformers.aliasToBean(IdCard.class));
+		query.setResultTransformer(Transformers.aliasToBean(BusinessLicense.class));
 		return query.list();
 	}
 

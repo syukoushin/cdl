@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.ibm.cdl.manage.pojo.IdCard" table="id_card">
+    <class name="com.ibm.cdl.manage.pojo.BusinessLicense" table="business_license">
     
         <id name="id" type="java.lang.String">
             <column name="ID" />
@@ -11,20 +11,20 @@
         <property name="name" type="java.lang.String">
             <column name="NAME"/>
         </property>
- 		<property name="cardNo" type="java.lang.String">
-            <column name="CARD_NO"/>
+ 		<property name="creditCode" type="java.lang.String">
+            <column name="CREDIT_CODE"/>
         </property>
  		<property name="address" type="java.lang.String">
             <column name="ADDRESS"/>
         </property>
-        <property name="sex" type="java.lang.String">
-            <column name="SEX"/>
+        <property name="regNumber" type="java.lang.String">
+            <column name="REG_NUMBER"/>
         </property>
-        <property name="ethnic" type="java.lang.String">
-            <column name="ETHNIC"/>
+        <property name="incorporator" type="java.lang.String">
+            <column name="INCORPORATOR"/>
         </property>
-        <property name="birthDay" type="java.lang.String">
-            <column name="BIRTHDAY"/>
+        <property name="endDate" type="java.lang.String">
+            <column name="END_DATE"/>
         </property>
         <property name="createUser" type="java.lang.String">
             <column name="CREATE_USER"/>

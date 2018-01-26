@@ -128,7 +128,7 @@
 		
 		<div id="mapper" class="mask_box" style="display:none"></div>
 		<div id="addWindow" style="display:none" class="mask_content">
-			<div class="mask_content_top"><p>地图</p><span class="mark_close"></span></div>
+			<div class="mask_content_top"><p>图片</p><span class="mark_close"></span></div>
 			<div style="width:600px;height:300px" id="container"></div>
 		</div>
 		<div id="showBigImg" style="display:none" class="mask_content" style="top:30%">

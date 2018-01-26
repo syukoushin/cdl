@@ -1,11 +1,10 @@
 <#import "../Manage/top.ftl" as top>
-
 <#import "../Manage/menu.ftl" as menu>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta charset="UTF-8">
-		<title>查看身份证详情</title>
+		<title>查看营业执照详情</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="${base}/css/common.css"/>
 		<link rel="stylesheet" type="text/css" href="${base}/css/move.css"/>
@@ -48,42 +47,41 @@
 							<p class="siyuannormal">查看详情</p>
 						</div>
 						<div class="create_table_content">
-						<form id="myForm"  method="post" enctype="multipart/form-data">
+						<form id="myForm" action="${base}/admin/WordOrder_ajaxAdd.do" method="post" enctype="multipart/form-data">
 							<table border="0" cellspacing="" cellpadding=""><tbody>
 								<tr>
-									<td class="span_tdl siyuannormal">身份证号：</td>
+									<td class="span_tdl siyuannormal">注册号：</td>
 									<td class="span_tdr siyuannormal">
-										${entity.cardNo?if_exists}
+										${entity.regNumber?if_exists}
 									</td>
 								</tr>
 								<tr>
-									<td class="span_tdl siyuannormal">姓名：</td>
+									<td class="span_tdl siyuannormal">社会信用代码：</td>
+									<td class="span_tdr siyuannormal">
+										${entity.creditCode?if_exists}
+									</td>
+								</tr>
+								<tr>
+									<td class="span_tdl siyuannormal">单位名称：</td>
 									<td class="span_tdr siyuannormal">
 										${entity.name?if_exists}
 									</td>
 								</tr>
-								<tr>
-									<td class="span_tdl siyuannormal">性别：</td>
+								<tr><td class="span_tdl siyuannormal">住址：</td>
 									<td class="span_tdr siyuannormal">
-										${entity.sex?if_exists}
+										${entity.address?if_exists}
 									</td>
 								</tr>
-								<tr><td class="span_tdl siyuannormal">生日：</td>
-									<td class="span_tdr siyuannormal">
-										${entity.birthday?if_exists}
-									</td>
-								</tr>
-                                <tr ><td class="span_tdl siyuannormal">名族：</td>
-                                    <td  class="span_tdr siyuannormal">
-									${entity.ethnic?if_exists}
-                                    </td>
-                                </tr>
-								<tr ><td class="span_tdl siyuannormal">住址：</td>
+								<tr ><td class="span_tdl siyuannormal">法定代表人：</td>
 									<td  class="span_tdr siyuannormal">
-									${entity.address?if_exists}
+									${entity.incorporator?if_exists}
 									</td>
 								</tr>
-
+								<tr ><td class="span_tdl siyuannormal">有效日期至：</td>
+									<td  class="span_tdr siyuannormal">
+									${entity.endDate?if_exists}
+									</td>
+								</tr>
 								<tr><td class="span_tdl siyuannormal">上传时间：</td>
 									<td  class="span_tdr siyuannormal">
 									${entity.createTime?string("yyyy-MM-dd HH:mm:ss")}
@@ -93,7 +91,7 @@
 									${entity.createUser?if_exists}
 								</td>
 								<#if attachmentList?has_content>
-									<tr><td class="span_tdl siyuannormal">身份证图片：</td>
+									<tr><td class="span_tdl siyuannormal">营业执照图片：</td>
 										<td class="span_tdr siyuannormal" style="position:relative;">
 											<#list attachmentList?if_exists as item>
 												<img width=100px height=100px src="${base}/attachment/download.do?id=${item.id}" onclick="showBigImg(this);">
@@ -103,7 +101,7 @@
 								</#if>
 									<tr><td class="span_tdl siyuannormal"></td>
 										<td class="span_tdr siyuannormal td_btn">
-											<input onclick="goList()" style="font-family:'微软雅黑';" type="button" value="确定" />
+											<input onclick="goBusinessLicenseList()" style="font-family:'微软雅黑';" type="button" value="确定" />
 										</td>
 									</tr>
 								</tbody>
@@ -148,8 +146,8 @@
 	        marker.setMap(map);
 
 	    }
-		function goList(){
-			window.location ="${base}/manage/IdCard_toList.do";
+		function goBusinessLicenseList(){
+			window.location ="${base}/manage/BusinessLicense_toList.do";
 		}
 		function bigImg(obj){
 			$(obj).next("div").fadeIn(500);
