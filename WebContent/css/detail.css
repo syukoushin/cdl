@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+/***
+ * uimaker
+ */
+.detailBody{border:0;margin:0;padding:0;}
+a,a:focus{text-decoration:none;color:#000;outline:none;blr:expression(this.onFocus=this.blur());}
+a:hover{color:#00a4ac;text-decoration:none;}
+
+/*right.html*/
+.place,.placeul{display:block;list-style:none;font-size:9pt;border:0;margin:0;padding:0;}
+.place{width:100%;height:40px; background:url(../images/righttop.gif) repeat-x;z-index: 999;_position: absolute;top: 0;_top: expression(documentElement.scrollTop + 0 + "px");}
+.place span{padding:0;display:block;font-family:'微软雅黑';line-height:40px; font-weight:bold;float:left; margin-left:12px;}
+.placeul li{display:block;font-family:'微软雅黑';float:left; line-height:40px; padding-left:7px; padding-right:12px; background:url(../images/rlist.gif) no-repeat right;}
+.placeul li:last-child{background:none;}

@@ -1,0 +1,46 @@
+@charset "utf-8";
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+body,textarea,input,button,select,keygen,legend {font-size:12px; color:#333;outline:0;}
+body{background:#fff;}
+a,a:hover{color:#333;}
+a:focus {outline:none; -moz-outline:none;}
+.fl {float: left;}
+.fr {float: right;}
+.mr-r-n { margin-right: 0px !important; }
+.bor-r-n { border-right: none !important; }
+.clear { clear: both; }
+.clearfix:after{visibility:hidden;display:block;font-size:0;content: " ";clear:both;height:0;}
+.clearfix{*zoom:1;}
+/*头部*/
+.header{width: 100%;min-width: 1000px;}
+.header .head{width: 1000px;min-width: 1000px;margin: 0px auto;height: 123px;background: url(../images/move/head_bg.jpg) no-repeat center;}
+.header .head .head_l {height: 123px; line-height: 123px;}
+.header .head .head_l .logo{padding-top: 32px;}
+.header .head .head_l span{font-size: 24px;color: #007cd0;padding-left: 14px;}
+.header .head .head_r{height: 29px;line-height: 29px;}
+.header .head .head_r span{padding-right: 15px;}
+.header .head .head_r span a{color: #666666;font-size: 12px;}
+.header .head .head_r span a.btn_signout{color: #0069ba;}
+.header .head .head_r span a:hover{text-decoration: underline;}
+
+
+
+.mt4{ margin-top:4px;}
+.ml4{ margin-left:4px;}
+.color6{ color:#999}

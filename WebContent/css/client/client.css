@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+
+html,body{ margin:0; padding:0; font-family:"微软雅黑", "宋体", Arial;}
+
+.wrap{ width:100%; height:760px; background:url(../../images/client/bgNew.jpg) 0 0 repeat; box-shadow:0px 0px 200px 0px rgba(0,0,0,0.4) inset;}
+.title_01{ margin:0; padding:1em 0 1.5em 0; background:url(../../images/client/line.png) 50% 100% no-repeat; text-align:center; text-shadow:0px 1px 1px #fff,0px 1px 1px rgba(0,0,0,0.2); color:#5b5b5b; font-weight:normal;}
+.title_01 img{ vertical-align:middle; margin-right:10px;}
+table.tb_01{ margin:0 auto;}
+table.tb_01 td{ vertical-align:top; padding:3em 0 0 0;}
+.dowBtn01,.dowBtn02,.dowBtn03{ width:148px; height:49px; padding-left:28px; border:0; text-align:left; color:#fff; font-size:16px;}
+.dowBtn01{margin-top: 25px; background:url(../../images/client/2.png) 0 0 no-repeat;}
+.dowBtn01:hover{ background:url(../../images/client/1new.png) 3px 2px no-repeat;}
+.dowBtn02{ background:url(../../images/client/4.png) 0 0 no-repeat;}
+.dowBtn02:hover{ background:url(../../images/client/3.png) 3px 2px no-repeat;}
+.dowBtn03{ background:url(../../images/client/6.png) 0 0 no-repeat;}
+.dowBtn03:hover{ background:url(../../images/client/5.png) 3px 2px no-repeat;}
+.verArea01{height:4em; padding-left:2.5em;}
+.tips{ font-size:16px; text-align:left; margin-top:3em; color:#666;text-align: center;}

@@ -1,0 +1,165 @@
+/*消息中心*/
+
+.messageCenterTitle{
+	background: url(../images/message/wc_titlebg2.jpg) no-repeat left bottom;
+	color: #333;
+	line-height:35px;
+	text-align:left;
+	font-size:13px;
+	padding-left:40px;
+	height:35px;
+}
+#messageCenter {
+	background: #f8f8f8;
+	color: #333;
+	position: absolute;
+	width: 850px;
+	z-index: 199;
+	/*
+	height: 490px;
+	*/
+	height: 600px;
+	border: 1px solid #b4b4b4;
+	display: none;
+}
+
+
+#messageCenterListShow ul{
+	text-align:center;
+	margin:0 auto; 
+}
+#messageCenterListShow ul li{
+	list-style-type:none;
+	float:left;
+}
+
+#messageCenterIframe{
+	border-top-width: 0px; 
+	border-right-width: 0px;  
+	border-bottom-width: 0px;  
+	border-left-width: 0px;  
+	border-style: initial;  
+	border-color: initial;  
+	padding-top: 0px;  
+	padding-right: 0px;  
+	padding-bottom: 0px;  
+	padding-left: 0px;  
+	margin-top: 0px;  
+	margin-right: 0px;  
+	margin-bottom: 0px;  
+	margin-left: 0px;  
+	width: 100%;  
+	overflow-x: hidden;  
+	overflow-y: hidden;  
+	height: 100%;
+}
+
+#left_tab{
+	width:123px;
+	float:left;
+	/*
+	height:455px;
+	*/
+	height:565px;
+	background: #edeff1 url(../images/message/sNav_bg.png) 0 0 repeat-y;
+}
+#left_tab ul {
+	list-style-type:none;
+	padding:0px;
+	margin:0px;
+	
+}
+#left_tab ul li{
+	color:#333;
+	line-height:66px;
+	border-bottom : 1px solid #dbdbdb;
+	display:block;
+	width:123px;
+	height:66px;
+	margin:0px;
+	cursor:pointer;
+	text-align:left;
+}
+#left_tab ul li.hover{
+	background: #f8f8f8;
+}
+
+#left_tab ul li a{ font-size:14px; color:#333; text-align:center; text-decoration:none;}
+#left_tab .sNav01 a{ display:block; width:123px; height:66px; background:#d5d5d5 url(../images/message/sNav_01_01.jpg) 0 0 no-repeat; text-indent:-9999px;}
+#left_tab .sNav01 a.hover{ background:url(../images/message/sNav_01_02.jpg) 0 0 no-repeat;}
+#left_tab .sNav02 a{ display:block; width:123px; height:66px; background:#d5d5d5 url(../images/message/sNav_02_01.jpg) 0 0 no-repeat; text-indent:-9999px;}
+#left_tab .sNav02 a.hover{ background:url(../images/message/sNav_02_02.jpg) 0 0 no-repeat;}
+#left_tab .sNav03 a{ display:block; width:123px; height:66px; background:#d5d5d5 url(../images/message/sNav_03_01.jpg) 0 0 no-repeat; text-indent:-9999px;}
+#left_tab .sNav03 a.hover{ background:url(../images/message/sNav_03_02.jpg) 0 0 no-repeat;}
+#left_tab .sNav04 a{ display:block; width:123px; height:66px; background:#d5d5d5 url(../images/message/sNav_04_01.jpg) 0 0 no-repeat; text-indent:-9999px;}
+#left_tab .sNav04 a.hover{ background:url(../images/message/sNav_04_02.jpg) 0 0 no-repeat;}
+
+
+/**消息提示**/
+.layer_message_box {
+	width: 190px;
+	position: fixed;
+	_position: absolute;
+	z-index: 9;
+	padding: 6px 1px;
+	line-height: 170px;
+	border: 1px solid #c9b382;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	right: 18px;
+	top: 30px;
+	_top: expression(documentElement.scrollTop + 33 + "px");
+	background: url(../images/message/layer_bg.png);
+	_background: #fff;
+	font-size: 12px;
+	display: none;
+}
+.layer_message_box li {
+	padding: 5px 10px;
+	color: #595959;
+	line-height: 14px;
+}
+.layer_message_box ul,li {
+	margin: 0;
+	padding: 0;
+}
+.layer_message_box .w_close_color {
+	background: url(../images/message/close.gif) no-repeat 0 -11px;
+	width: 11px;
+	height: 11px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	display: inline-block;
+	overflow: hidden;
+}
+a.w_close_color {
+	cursor: pointer;
+	width: 11px;
+	height: 11px;
+	overflow: hidden;
+	display: inline-block;
+	background-position: 0 -11px;
+}
+.layer_message_box ul li a {
+	color: #069;
+}
+
+
+ 
+.message_number {
+	font-size: 11px;
+	line-height: 20px;
+	color: #FFF;
+	background-image: url(../images/message/topbar_bg.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	width: 25px;
+	height: 20px;
+	float: left;
+	padding-left: 5px;
+	margin-top: 3px;
+	text-align: center;
+	cursor:pointer;
+}

@@ -1,0 +1,168 @@
+
+.bt_text{
+    width:100%;
+    height: auto;
+} 
+.sign_in{
+    position: relative;
+}
+.logo_b{
+    position:absolute;
+    right:33.5%;
+    top:160px;
+}
+.login{
+
+    position: absolute;
+    top:280px;
+    right:33%;
+    width:460px;
+    height: 250px;
+    background: url('../../images/cms/bgt.png') no-repeat;
+}
+.lg_input{
+    background: #fff; 
+    position: absolute;
+    margin-top:20px;
+    margin-left:20px;
+    border-radius: 6px;
+
+}
+.input_style{
+    width: 200px;
+    height: 25px;
+    line-height: 25px;
+    border:#fff 1px solid;
+}
+.lg_input .a_one{
+    border-bottom: #e5e5e5 1px solid;
+}
+.lg_input ul li{
+    width: 250px;
+    padding-top:15px;
+    padding-left:15px;
+}
+.shop_register{
+    border-radius: 4px;
+    display: block;
+    width: 245px;
+    height: 38px;
+    background: #1d89ff;
+    color: #fff;
+    line-height: 38px;
+    text-align: center;
+    font-size: 16px;
+    font-family: "微软雅黑";
+}
+
+.pl5{
+    padding-left:5px;
+}
+.bt_text{
+    position: absolute;
+
+}
+.bg_img{
+    width: 100%;
+    background: url(../img/bg_img.png) center top no-repeat;
+}
+.dl_button ul li{
+    float: left;
+    margin-left:20px;
+
+}
+.dl_button .logins{
+    text-align: center;
+    font-family: "微软雅黑";
+    text-decoration: none;
+    background: #0093fd;
+    border: #0688b8 1px solid;
+    display: inline-block;
+    width:80px;
+    height: 35px;
+    color: #fff;
+    font-size: 1em;
+    line-height: 35px;
+    float: right;
+    padding: 0px;
+    border-radius: 3px;
+}
+
+/* 鐧诲綍椤垫牱寮�*/
+
+.collection{
+    margin: 0 auto;
+    margin-top: 42px;
+    text-align: center;
+    width: 287px;
+    background: #dfe8f7;
+}
+.collection dl{width:260px;}
+.collection dl dt {
+padding-top: 3px;
+    color: #000;
+    line-height: 29px;
+    font-size: 14px;
+    text-align: right;
+    width: 60px;
+    float: left;
+    margin: 0px;
+    font-family: "微软雅黑";
+}
+.collection dl dd .text_inputs{
+    font-family: "微软雅黑";
+    line-height: 20px;
+    width:170px;
+    border: #d9d8d8 1px solid;
+    padding-left: 10px;
+    color: rgb(153, 153, 153);
+    }
+.collection dl dd {
+    margin:0px;
+    float: left;
+    padding: 8px;
+    }
+ .add_inp{
+    font-size:24px;
+    padding-top:40px;
+    text-align:left;
+    padding-left:10px;
+ }
+ .selects{
+     line-height: 33px;
+    height: 35px;
+    width: 207px;
+    border: #d9d8d8 1px solid;
+    padding-left: 10px;
+    color: rgb(153, 153, 153);
+ }
+ .fx_checkbox ul li{
+    float:left;
+    width: 40px;
+ }
+ .qd_time{
+    border-radius: 4px;
+    border: #e5e5e5 1px solid;
+    height: 35px;
+    line-height: 35px;
+ }
+ .aniu{
+    width:40px;
+    height: 25px;
+    line-height: 25px;
+    background: #e5e5e5;
+    text-align: center;
+}
+.btn{
+    text-decoration:none;
+    background: #666;
+    display: inline-block;
+    width:20%;
+    height: 40px;
+    color:#fff;
+    font-size: 1em;
+    line-height: 40px;
+    float: right;
+    padding: 0px;
+    border-radius: 3px;
+}

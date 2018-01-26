@@ -1,0 +1,64 @@
+﻿.dialog-overlay
+{
+	opacity: 0.5;
+	filter: alpha(opacity:50);
+	background: #000;
+	-moz-user-select: none;
+}
+
+.dialog
+{
+	/*border:5px solid rgba(200,200,200,0.9);*/ /*-moz-opacity:0.9;     opacity:0.9; 	-moz-user-select:none;     filter:alpha(opacity:90);*/
+	border:1px #ccc solid;
+	box-shadow: 3px 3px 6px #333; /*ie9*/
+	-moz-box-shadow: 3px 3px 6px #333; /*firefox*/
+	-webkit-box-shadow: 3px 3px 6px #333; /*webkit*/
+}
+
+
+.dialog .bar
+{
+	cursor: move;
+	color: #fff;
+	background:url(../../images/cms/tit.gif) repeat-x;
+	line-height:30px;
+	padding-left:10px;
+	height: 30px;
+	min-height: 30px; /* 不指定此值，在title和closeText都为空的情况下，可能移动条会消失不见 */
+	_height: expression('30px'); /* ie6下不指定高度，标题栏会变得很小 */
+	-moz-user-select: none;
+}
+
+.dialog .bar .title
+{
+	float: left;
+	margin-right: 10px;
+	color:#333333;
+	font-weight:bold;
+}
+
+.dialog .bar .close
+{
+	float: right;
+	cursor: pointer;
+	width:29px;height:29px;
+	background:url(../../images/cms/close.gif) no-repeat 0 0;
+}
+
+.dialog .dialogcontent
+{
+	background: #fff;
+	padding: 10px 5px;
+}
+
+/* 指定图像最大尺寸，不需要可以删除。 */
+/* 
+.dialogcontent img
+{
+	overflow: auto;
+	max-width: 700px;
+	max-height: 500px;  IE6版的max-width和max-height，但是也会有点BUG在图片太小时，也会显示最大值，需要同时指定width和height 
+	_width: expression((document.body.clientWidth > 700) ? '700px' : 'auto');
+	_height: expression((document.body.clientHeight > 700) ? '700px' : 'auto');
+}
+*/

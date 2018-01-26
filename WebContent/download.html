@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+		<meta name='viewport' content='width=device-width,initial-scale=1.0,minimum-scale=0.3,maximum-scale=2.0,user-scalable=yes;'/>
+		<meta name="MobileOptimized" content="240"/>
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+		<meta content="telephone=no" name="format-detection"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+		<title>客户端下载</title>
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<link href="css/client/client.css" rel="stylesheet" type="text/css" />
+	</head>
+	<script>
+		 //下载
+		 function download(){
+		 	document.location.href = "http://47.93.20.239/cdl/attachment/app/cdl.apk";
+		 }
+	</script>
+	<!-- 集成微信扫描二维码样式 -->
+	<style type="text/css">
+		.weixin-tip{display: none; position: fixed; left:0; top:0; bottom:0; background: rgba(0,0,0,0.8); filter:alpha(opacity=80);  height: 100%; width: 100%; z-index: 100;}
+		.weixin-tip p{text-align: center; margin-top: 10%; padding:0 5%;}
+	</style>
+	<body>
+		<!-- 集成微信扫描二维码 -->
+		<div class="weixin-tip">
+			<p>
+				<img style="max-width: 100%; height: auto;" src="images/live_weixin.png" alt="微信打开"/>
+			</p>
+		</div>
+		<div class="wrap">
+			<h2 class="title_01">
+			<img src="images/client/download_pre.png" width="150" height="150" /></h2>
+			<table class="tb_01">
+				<tr>
+					<td><input name="androidLink" type="button" class="dowBtn01" value="Android" onclick="download();"/></td> 
+				</tr>
+			</table>
+		</div>
+	</body>
+	<script>
+        var winHeight = $(window).height();
+ 		function is_weixin() {
+ 		    var ua = navigator.userAgent.toLowerCase();
+ 		    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+ 		        return true;
+ 		    } else {
+ 		        return false;
+ 		    }
+ 		}
+ 		var isWeixin = is_weixin();
+ 		if(isWeixin){
+ 			$(".weixin-tip").css("height",winHeight);
+          	$(".weixin-tip").show();
+ 		}
+	</script>
+</html>
