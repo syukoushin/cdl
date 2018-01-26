@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ibm.cdl.manage.pojo.User" table="user">
+        <id name="id" type="java.lang.String">
+            <column name="ID" />
+            <generator class="uuid.hex"/>
+        </id>
+ 		<property name="userCode" type="java.lang.String">
+            <column name="USER_CODE"/>
+        </property>
+ 		<property name="type" type="java.lang.String">
+            <column name="TYPE"/>
+        </property>
+        <property name="userName" type="java.lang.String">
+            <column name="USER_NAME"/>
+        </property>
+        <property name="mail" type="java.lang.String">
+            <column name="MAIL"/>
+        </property>
+        <property name="telephone" type="java.lang.String">
+            <column name="TELEPHONE"/>
+        </property>
+        <property name="mobile" type="java.lang.String">
+            <column name="MOBILE"/>
+        </property>
+        <property name="idCardNum" type="java.lang.String">
+            <column name="IDCARDNUM"/>
+        </property>
+        <property name="deptCode" type="java.lang.String">
+            <column name="DEPT_CODE"/>
+        </property>
+        <property name="jobLevel" type="java.lang.String">
+            <column name="JOB_LEVEL"/>
+        </property>
+        <property name="seq" type="java.lang.Integer">
+            <column name="SEQ"/>
+        </property>
+        <property name="position" type="java.lang.String">
+            <column name="POSI"/>
+        </property>
+        <property name="pinYin" type="java.lang.String">
+            <column name="PINYIN"/>
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="PASSWORD"/>
+        </property>
+        <property name="groupId" type="java.lang.String">
+            <column name="GROUP_ID"/>
+        </property>
+        <property name="createBy" type="java.lang.String">
+            <column name="CREATE_BY"/>
+        </property>
+        <property name="createTime" type="java.sql.Timestamp">
+            <column name="CREATE_TIME"/>
+        </property>
+    </class>
+</hibernate-mapping>

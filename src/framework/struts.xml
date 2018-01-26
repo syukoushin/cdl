@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+"http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<package name="my-struts-global-package" extends="struts-default">
+		<interceptors>
+			<!-- 定义统一认证拦截器 -->
+			<interceptor name="sessionInterceptor" class="com.ibm.core.interceptor.SessionInterceptor"/>
+			<interceptor name="LoginLogInterceptor" class="com.ibm.core.interceptor.PortalLogInterceptor">
+				<param name="includeMethods">*</param>
+				<param name="paramSet">invoke=login,saveAppLogin,getPortalInfo</param>
+				<param name="resultKey">resultJSON</param>
+			</interceptor>
+			<interceptor name="CommonLogInterceptor" class="com.ibm.core.interceptor.CommonLogInterceptor">
+				<param name="includeMethods">*</param>
+				<param name="paramSet"></param>
+				<param name="resultKey">resultJSON</param>
+			</interceptor> 
+			<interceptor-stack name="sessionInterceptorStack">
+				<interceptor-ref name="sessionInterceptor"/>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+			<interceptor-stack name="LoginLogInterceptorStack">
+				<interceptor-ref name="LoginLogInterceptor"/>	
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+			<interceptor-stack name="CommonLogInterceptorStack">
+				<interceptor-ref name="CommonLogInterceptor"/>	
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="sessionInterceptorStack"/> 
+		<global-results>
+			<result name="relogin" type="redirect">/login.jsp</result>
+			<result name="relogincms" type="redirect">/cms/index.do</result>
+			<result name="clientError" type="redirect">/cms/index.do</result>
+		</global-results>
+		 <global-allowed-methods>regex:.*</global-allowed-methods>
+	</package>
+	
+	<include file="struts-default.xml" />
+	<include file="struts-plugin.xml" />
+	
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.multipart.saveDir" value="/temp" />
+	<constant name="struts.enable.SlashesInActionNames" value="true" />
+	<constant name="struts.action.extension" value="do,ftl,action" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.multipart.maxSize" value="104857600"/>
+  <constant name="struts.strictMethodInvocation.methodRegex" value="([a-zA-Z]*)"/>
+
+	<package name="login" extends="my-struts-global-package" namespace="/">
+		<!-- 登陆 -->
+		<action name="*"  class="com.ibm.cdl.manage.action.ManageAction" method="{1}">
+			<result name="success" type="freemarker">/main.ftl</result>
+			<result name="error">/login.jsp</result>
+			<result name="left" type="freemarker">/left.ftl</result>
+			<result name="top" type="freemarker">/top.ftl</result>
+			<result name="redirectUrl" type="freemarker">/app/{1}/${redirectUrl}.ftl</result>
+			<result name="redirectAction" type="redirect">${redirectAction}</result>
+		</action>
+	</package>
+	
+	<!-- 后台 -->
+	<package name="manager" extends="my-struts-global-package" namespace="/manage">
+		<action name="*_*" class="com.ibm.cdl.manage.action.{1}Action" method="{2}">
+			<result name="redirectUrl" type="freemarker">/app/{1}/${redirectUrl}.ftl</result>
+			<result name="redirectAction" type="redirect">${redirectAction}</result>
+		</action>
+	</package>
+	
+	<!-- 接口 -->
+	<package name="portal" extends="my-struts-global-package" namespace="/portal">
+		<action name="*" class="com.ibm.cdl.portal.action.PortalAction" method="{1}">
+			<result name="success" type="freemarker">/app/portal/index.ftl</result>
+		</action>
+	</package>
+	
+	<!-- 附件-->
+	<package name="attachment" extends="my-struts-global-package,json-default" namespace="/attachment">
+	<default-interceptor-ref name="sessionInterceptor" />
+		<action name="*" class="com.ibm.cdl.attachment.action.AttachmentAction" method="{1}">
+			<result name="download" type="stream">
+			 	<param name="contentLength">${fileLength}</param>  
+				<param name="contentType">application/x-msdownload;charset=ISO8859-1</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="bufferSize">2048</param>
+			</result>
+			<result name="error" type="freemarker">/error/error.ftl</result>
+			<result name="success" type="json"></result>
+		</action>
+	</package>
+	
+	<!-- 数据字典 -->
+	<package name="datamap" extends="my-struts-global-package" namespace="/datamap">
+		<action name="*_*" class="com.ibm.cdl.datamap.action.{1}Action" method="{2}">
+			<result name="redirectUrl" type="freemarker">/app/{1}/${redirectUrl}.ftl</result>
+			<result name="redirectAction" type="redirect">${redirectAction}</result>
+		</action>
+	</package>
+	
+	
+	
+
+	<package name="log" extends="my-struts-global-package" namespace="/log">
+		<action name="*"  class="com.ibm.core.log.action.LogAction" method="{1}">
+			<result name="list" type="freemarker">/app/log/list.ftl</result>
+		</action>
+	</package>
+	
+</struts>

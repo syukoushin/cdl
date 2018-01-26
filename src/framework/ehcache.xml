@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+	monitoring="autodetect" dynamicConfig="true">
+
+	<diskStore path="java.io.tmpdir" />
+    <!-- 采用RMI集群模式 ：通过多播来维护集群中的所有有效节点，需指定节点发现模式peerDiscovery为automatic
+ 	<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory" properties="peerDiscovery=automatic,multicastGroupAddress=230.0.0.1, multicastGroupPort=4446,timeToLive=32" />
+
+	<cacheManagerPeerListenerFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory" />
+	-->
+ 	<!-- 基本缓存 -->
+	<cache name="BaseCatch" maxElementsInMemory="4000"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false"
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- SESSION缓存 -->
+	<cache name="SessionCatch" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		 <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- DBPath缓存 -->
+	<cache name="DBPATH_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false"
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- 用来缓存获取基础数据的缓存 -->
+	<cache name="MOA_BASE_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- 用来缓存获取appList的缓存 -->
+	<cache name="MOA_APPLIST_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+ 
+ 	<!-- 用来缓存获取通用接口配置的缓存 -->
+	<cache name="MOA_APPINTER_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- 用来缓存提示信息的缓存 -->
+	<cache name="MOA_POINTMESSAGE_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- 用来缓存用户信息的缓存 -->
+	<cache name="MOA_USERVIEW_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	<!-- 用来缓存获取appList的缓存 -->
+	<cache name="MOA_TODOLIST_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- 用来缓存获取sqlResult的缓存 -->
+	<cache name="SQL_RESULE_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+	<!-- 用来缓存获取sqlResult的缓存 -->
+	<cache name="SQL_DIMEN_CACHE" maxElementsInMemory="4000" statistics="true"
+		eternal="true" overflowToDisk="true" maxElementsOnDisk="9000" diskPersistent="false" 
+		memoryStoreEvictionPolicy="LRU">
+<!--		<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />-->
+	</cache>
+	
+</ehcache>

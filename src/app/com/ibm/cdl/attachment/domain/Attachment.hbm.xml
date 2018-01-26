@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- 
+    author:syl
+-->
+<hibernate-mapping>
+    <class name="com.ibm.cdl.attachment.domain.Attachment" table="attachment" dynamic-insert="true" dynamic-update="true">
+        <id name="id" type="java.lang.String">
+            <column name="ID" length="32" />
+            <generator class="uuid" />
+        </id>
+        <property name="realName" type="java.lang.String">
+            <column name="REAL_NAME" length="300">
+                <comment>附件真实名称</comment>
+            </column>
+        </property>
+        <property name="attachType" type="java.lang.String">
+            <column name="ATTACH_TYPE" length="300">
+                <comment>附件类型</comment>
+            </column>
+        </property>
+        <property name="storeName" type="java.lang.String">
+            <column name="STORE_NAME" length="200">
+                <comment>附件存储名字</comment>
+            </column>
+        </property>
+        <property name="businessId" type="java.lang.String">
+            <column name="BUSINESS_ID" length="32">
+                <comment>业务ID</comment>
+            </column>
+        </property>        
+        <property name="storePath" type="java.lang.String">
+            <column name="STORE_PATH" length="200">
+                <comment>文件存储路径</comment>
+            </column>
+        </property>        
+        <property name="createUser" type="java.lang.String">
+            <column name="CREATE_USER" length="32">
+                <comment>创建人</comment>
+            </column>
+        </property>
+        <property name="createDate" type="java.util.Date">
+            <column name="CREATE_DATE" length="26">
+                <comment>创建时间</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

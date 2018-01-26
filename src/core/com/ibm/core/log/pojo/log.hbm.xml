@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-5-13 9:46:43 by Hibernate Tools 3.2.4.GA -->
+<hibernate-mapping>
+    <class name="com.ibm.core.log.pojo.Log" table="LOG">
+        <id name="id" type="string">
+            <column name="ID" length="40" />
+            <generator class="uuid" />
+        </id>
+        <property name="userCode" type="string">
+            <column name="USER_CODE" />
+        </property>
+        <property name="method" type="string">
+            <column name="METHOD" length="100" />
+        </property>
+        <property name="operation" type="string">
+            <column name="OPERATION" length="100" />
+        </property>
+        <property name="result" type="string">
+            <column name="RESULT"  />
+        </property>
+        <property name="oprationTime" type="timestamp">
+            <column name="OPTIME" />
+        </property>
+        <property name="status" type="string">
+            <column name="STATUS" />
+        </property>
+         <property name="note" type="string">
+            <column name="NOTE" />
+        </property>
+    </class>
+</hibernate-mapping>
