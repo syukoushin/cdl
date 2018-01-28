@@ -29,21 +29,22 @@ public class LicenseServiceImpl implements LicenseService {
 		StringBuilder hql = new StringBuilder();
 		Map<String,Object> pMap = new HashMap<String,Object>();
 
-		hql.append("select l.NAME as name,");
+		hql.append("select l.NAME as name, ");
 		hql.append ("l.ID as id, ");
 		hql.append ("l.CARD_NO as cardNo, ");
-		hql.append ("l.ADDRESS as address,");
-		hql.append ("l.CAR_TYPE as carType,");
-		hql.append ("l.BAND_NO as bandNo,");
-		hql.append ("l.CAR_NO as carNo,");
-		hql.append ("l.ENGIN_NO as enginNo,");
-		hql.append ("l.REGIST_DATE as registDate,");
-		hql.append ("l.PASS_DATE as passDate,");
-		hql.append ("l.CREATE_TIME as createTime");
+		hql.append ("l.ADDRESS as address, ");
+		hql.append ("l.CAR_TYPE as carType, ");
+		hql.append ("l.BAND_NO as bandNo, ");
+		hql.append ("l.CAR_NO as carNo, ");
+		hql.append ("l.ENGIN_NO as enginNo, ");
+		hql.append ("l.REGIST_DATE as registDate, ");
+		hql.append ("l.PASS_DATE as passDate, ");
+		hql.append ("l.CREATE_TIME as createTime, ");
+		hql.append (" a.ID AS attId");
 		hql.append (" from ");
 		
 		StringBuilder where = new StringBuilder();
-		where.append(" license l  where 1 = 1 ");
+		where.append(" license l ").append(" left join attachment a on a.BUSINESS_ID = l.ID where 1 = 1 ");
 		// cardno不为空的场合
 		if( entity.getCardNo() != null && !"".equals(entity.getCardNo())){
 			where.append(" and l.CARD_NO= :cardNo");

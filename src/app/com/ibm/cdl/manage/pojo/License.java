@@ -1,9 +1,9 @@
 package com.ibm.cdl.manage.pojo;
 
+import com.ibm.core.util.excel.annotation.ExcelField;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
-
-import com.ibm.core.util.excel.annotation.ExcelField;
 
 /**
  * 行驶证实体类
@@ -47,6 +47,9 @@ public class License implements Serializable {
 	
 	// 创建人
 	private String createUser;
+
+	// 附件
+	private String attId;
 
 	// 创建时间
 	private Timestamp createTime = new Timestamp(System.currentTimeMillis());
@@ -154,5 +157,12 @@ public class License implements Serializable {
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
-	
+
+	public String getAttId() {
+		return attId;
+	}
+
+	public void setAttId(String attId) {
+		this.attId = attId;
+	}
 }

@@ -43,11 +43,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 		hql.append("  i.FRAME_NO AS frameNo,");
 		hql.append("  i.TAX AS tax,");
 		hql.append("  i.CREATE_TIME AS createTime,");
-		hql.append("  i.CREATE_USER AS createUser");
+		hql.append("  i.CREATE_USER AS createUser,");
+		hql.append("  a.ID AS attId");
 		hql.append(" from  ");
 
 		StringBuilder where = new StringBuilder();
-		where.append(" invoice i left join user u on i.CREATE_USER = u.USER_CODE where 1 = 1 ");
+		where.append(" invoice i ").append(" left join attachment a on a.BUSINESS_ID = i.ID where 1 = 1 ");
+
 		// 发票代码
 		if( entity.getInvoiceNo() != null && !"".equals(entity.getInvoiceNo())){
 			where.append(" and i.INVOICE_NO= :invoiceNo");
@@ -65,13 +67,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		// 车架号码
 		if(entity.getFrameNo() != null && !"".equals(entity.getFrameNo())){
-			where.append(" and i.FRAME_NO =:frameNo");
+			where.append(" and i.FRAME_NO = :frameNo");
 			pMap.put("frameNo", entity.getFrameNo());
 		}
 
 		// 判断创建人
 		if(entity.getCreateUser() != null && !"".equals(entity.getCreateUser())){
-			where.append(" and CREATE_USER = : createUser ");
+			where.append(" and i.CREATE_USER = :createUser ");
 			pMap.put("createUser", entity.getCreateUser());
 		}
 		StringBuilder order = new StringBuilder();
@@ -221,7 +223,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		// 发票代码
 		if( entity.getNumber() != null && !"".equals(entity.getNumber())){
-			where.append(" and i.NUMBER= :number");
+			where.append(" and i.NUMBER = :number");
 			pMap.put("number", entity.getNumber());
 		}
 		// 购买方税号
@@ -231,7 +233,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		// 车架号码
 		if(entity.getFrameNo() != null && !"".equals(entity.getFrameNo())){
-			where.append(" and i.FRAME_NO =:frameNo");
+			where.append(" and i.FRAME_NO = :frameNo");
 			pMap.put("frameNo", entity.getFrameNo());
 		}
 		
@@ -239,10 +241,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
 			
 		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
+			where.append(" and u.GROUP_ID = :groupId ");
 			pMap.put("groupId", currentUser.getGroupId());
 		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
+			where.append(" and u.GROUP_ID = :groupId ");
 			pMap.put("groupId", currentUser.getGroupId());
 			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
 			pMap.put("createBy", currentUser.getUserCode());

@@ -1,9 +1,10 @@
 package com.ibm.cdl.manage.pojo;
 
+import com.ibm.core.util.excel.annotation.ExcelField;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import com.ibm.core.util.excel.annotation.ExcelField;
 
 /**
  * 发票实体类
@@ -34,9 +35,12 @@ public class Invoice implements Serializable {
 	// 价税合计
 	@ExcelField(title="价税合计", align=2, sort=6)
 	private BigDecimal tax;
-	
+
 	// 创建人
 	private String createUser;
+
+	// 附件
+	private String attId;
 
 	// 创建时间
 	private Timestamp createTime = new Timestamp(System.currentTimeMillis());;
@@ -114,5 +118,12 @@ public class Invoice implements Serializable {
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
-	
+
+	public String getAttId() {
+		return attId;
+	}
+
+	public void setAttId(String attId) {
+		this.attId = attId;
+	}
 }

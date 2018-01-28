@@ -81,7 +81,7 @@
 	
 	<!-- 附件-->
 	<package name="attachment" extends="my-struts-global-package,json-default" namespace="/attachment">
-	<default-interceptor-ref name="sessionInterceptor" />
+	<!--<default-interceptor-ref name="sessionInterceptor" />-->
 		<action name="*" class="com.ibm.cdl.attachment.action.AttachmentAction" method="{1}">
 			<result name="download" type="stream">
 			 	<param name="contentLength">${fileLength}</param>  

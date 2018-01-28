@@ -38,17 +38,18 @@ public class IdCardServiceImpl implements IdCardService {
 		Map<String,Object> pMap = new HashMap<String,Object>();
 
 		hql.append("select l.NAME as name,");
-		hql.append ("l.ID as id, ");
-		hql.append ("l.CARD_NO as cardNo, ");
-		hql.append ("l.ADDRESS as address,");
-		hql.append ("l.SEX as sex,");
-		hql.append ("l.ETHNIC as ethnic,");
-		hql.append ("l.CREATE_USER as createUser,");
-		hql.append ("l.CREATE_TIME as createTime");
+		hql.append (" l.ID as id, ");
+		hql.append (" l.CARD_NO as cardNo, ");
+		hql.append (" l.ADDRESS as address,");
+		hql.append (" l.SEX as sex,");
+		hql.append (" l.ETHNIC as ethnic,");
+		hql.append (" l.CREATE_USER as createUser, ");
+		hql.append (" l.CREATE_TIME as createTime, ");
+		hql.append ("  a.ID AS attId");
 		hql.append (" from ");
 		
 		StringBuilder where = new StringBuilder();
-		where.append(" id_card l  where 1 = 1 ");
+		where.append(" id_card l ").append(" left join attachment a on a.BUSINESS_ID = l.ID where 1 = 1 ");;
 
 		// cardNo不为空的场合
 		if( entity.getCardNo() != null && !"".equals(entity.getCardNo())){

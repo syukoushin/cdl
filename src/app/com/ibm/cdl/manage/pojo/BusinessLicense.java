@@ -40,6 +40,7 @@ public class BusinessLicense implements Serializable {
     // 创建人
     private String createUser;
 
+    private String attId;
     // 创建时间
     private Timestamp createTime = new Timestamp(System.currentTimeMillis());
 
@@ -114,5 +115,13 @@ public class BusinessLicense implements Serializable {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public String getAttId() {
+        return attId;
+    }
+
+    public void setAttId(String attId) {
+        this.attId = attId;
     }
 }

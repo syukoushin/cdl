@@ -1,4 +1,5 @@
 <#import "top.ftl" as top>
+<#import "../Manage/menu.ftl" as menu>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -39,12 +40,7 @@
 			<div class="main">
 				<div class="container">
 					<div class="slide_left fl">
-						<ul>
-							<li></li>
-							<li class="select"><a href="javascript:void(0)" onclick="goLicense()" class="siyuannormal" style="font-size:16px;"><i class="link_i1"><img src="/cdl/images/cms/iconfont_1.png"></i>行驶证</a></li>
-							<li ><a href="javascript:void(0)" onclick="goInvoice()" class="siyuannormal" style="font-size:16px;"><i class="link_i1"><img src="/cdl/images/cms/iconfont_4.png"></i>发票</a></li>
-							<li><a href="javascript:void(0);" onclick="goEnginner()" class="siyuannormal" style="font-size:16px;"><i class="link_i2"><img src="/cdl/images/cms/iconfont_5.png"></i>客户端账号</a></li>
-						</ul>
+					<@menu.menu/>
 					</div>
 					<div class="create_right fr">
 						<div class="create_table_top">

@@ -38,6 +38,9 @@ public class IdCard  implements Serializable {
     // 创建人
     private String createUser;
 
+    // 附件
+    private String attId;
+
     // 创建时间
     private Timestamp createTime = new Timestamp(System.currentTimeMillis());
 
@@ -113,4 +116,11 @@ public class IdCard  implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getAttId() {
+        return attId;
+    }
+
+    public void setAttId(String attId) {
+        this.attId = attId;
+    }
 }

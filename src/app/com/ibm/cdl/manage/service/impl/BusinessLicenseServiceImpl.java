@@ -38,18 +38,19 @@ public class BusinessLicenseServiceImpl implements BusinessLicenseService {
 		Map<String,Object> pMap = new HashMap<String,Object>();
 
 		hql.append("select l.NAME as name,");
-		hql.append ("l.ID as id, ");
-		hql.append ("l.REG_NUMBER as regNumber, ");
-		hql.append ("l.ADDRESS as address,");
-		hql.append ("l.CREDIT_CODE as creditCode,");
-		hql.append ("l.INCORPORATOR as incorporator,");
-		hql.append ("l.END_DATE as endDate,");
-		hql.append ("l.CREATE_USER as createUser,");
-		hql.append ("l.CREATE_TIME as createTime");
+		hql.append (" l.ID as id, ");
+		hql.append (" l.REG_NUMBER as regNumber, ");
+		hql.append (" l.ADDRESS as address,");
+		hql.append (" l.CREDIT_CODE as creditCode,");
+		hql.append (" l.INCORPORATOR as incorporator,");
+		hql.append (" l.END_DATE as endDate,");
+		hql.append (" l.CREATE_USER as createUser,");
+		hql.append (" l.CREATE_TIME as createTime,");
+		hql.append ("  a.ID AS attId ");
 		hql.append (" from ");
 		
 		StringBuilder where = new StringBuilder();
-		where.append(" business_license l  where 1 = 1 ");
+		where.append(" business_license l ").append(" left join attachment a on a.BUSINESS_ID = l.ID where 1 = 1 ");;
 
 		// 信用代码不为空的场合
 		if( entity.getCreditCode() != null && !"".equals(entity.getCreditCode())){
