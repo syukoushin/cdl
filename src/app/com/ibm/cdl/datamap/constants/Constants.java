@@ -12,17 +12,22 @@ public class Constants {
 	public static String SYS_PARAMS_DECRYPT = "SYS_PARAMS_DECRYPT";
 	//过滤通用接口的参数
 	public static String SYS_PARAM_LOG_METHOD = "SYS_PARAM_LOG_METHOD";
-	
+
+	// 用户类型
+	// app用户
+	public static String APP_USER = "1";
+	// 后台用户
+	public static String ADMIN_USER = "0";
+
+
 	// 用户级别
 	public static String USER_TYPE = "USER_LEVEL";
 	// 一级 顶级管理员
 	public static String USER_ADMIN = "1";
-	// 二级  分公司管理员 可分配三级
-	public static String USER_SECOND = "2";
 	// 三级  分公司管理员
-	public static String USER_THIRD = "3";
+	public static String USER_DEPT = "2";
 	// 四级 没有登陆后台的权限
-	public static String USER_FOURTH = "4";
+	public static String USER_COMMON = "3";
 	
 	
 	

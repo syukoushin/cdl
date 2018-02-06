@@ -52,7 +52,7 @@ public class ManageAction extends DefaultBaseAction {
 		String password = getParameter("passWord");
 		password = DesUtils.strDec(password, "1","2","3");
 		password = DigestUtils.md5Hex(password);
-		User user = userService.getUserByUserCodeAndTypeForPc(userCode,Constants.USER_FOURTH);
+		User user = userService.getUserByUserCodeAndTypeForPc(userCode,Constants.ADMIN_USER);
 		if(user != null){
 			if(user.getPassword()!= null && password.equals(user.getPassword())){
 				getRequest().getSession().setAttribute("CURRENT_USER", user);

@@ -50,7 +50,7 @@ public class UserAction extends DefaultBaseAction {
 			String name= getParameter("userName");
 			String userCode= getParameter("userCode");
 			String groupId = getParameter("groupId");
-			
+
 			// 检查userCode是否存在
 			if(StringUtils.isNotEmpty(userCode)){
 				if(userService.checkExistUserCode(userCode)){
@@ -61,7 +61,8 @@ public class UserAction extends DefaultBaseAction {
 					enginner.setUserName(name);
 					enginner.setUserCode(userCode);
 					enginner.setPassword(DigestUtils.md5Hex(Constants.INIT_PWD));
-					enginner.setJobLevel(Constants.USER_ADMIN);
+					enginner.setType(Constants.ADMIN_USER);
+					enginner.setJobLevel(Constants.USER_DEPT);
 					enginner.setGroupId(groupId);
 					User user = getSessionUser();
 					userService.saveEntity(enginner,user);

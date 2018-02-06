@@ -11,6 +11,7 @@ import com.ibm.core.util.DateJsonValueProcessor;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public class PortalAction extends DefaultBaseAction {
 				json.put("optMsg", "参数错误");
 			}
 			password = DigestUtils.md5Hex(password);
-			User user = userService.getUserByUserCodeAndType(userCode,Constants.USER_ADMIN);
+			User user = userService.getUserByUserCodeAndType(userCode,Constants.APP_USER);
 			if(user != null){
 				if(user.getPassword()!= null && password.equals(user.getPassword())){
 					json.put("optSts", "0");
@@ -83,6 +84,52 @@ public class PortalAction extends DefaultBaseAction {
 		}
 		return null;
     }
+
+	/**
+	 *
+	 * 注册
+	 * @return
+	 */
+	public String regist() {
+		JSONObject json = new JSONObject();
+		try{
+			String password= getParameter("password");
+			String userCode= getParameter("phoneNumber");
+			String userName = getParameter("userName");
+			String deptName = getParameter("deptName");
+
+			// 检查userCode是否存在
+			if(StringUtils.isNotEmpty(userCode) && StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(deptName)){
+				if(userService.checkExistUserCode(userCode)){
+					json.put("optSts", "2");
+					json.put("optMsg", "该用户已存在");
+				} else {
+					User enginner = new User();
+					enginner.setUserName(userName);
+					enginner.setUserCode(userCode);
+					enginner.setPassword(DigestUtils.md5Hex(password));
+					enginner.setDeptName(deptName);
+					enginner.setJobLevel(Constants.USER_DEPT);
+					enginner.setType(Constants.APP_USER);
+					User user = getSessionUser();
+					userService.saveEntity(enginner);
+					json.put("optSts", "0");
+					json.put("optMsg", "成功");
+				}
+			} else {
+				json.put("optSts", "1");
+				json.put("optMsg", "用户名为空");
+			}
+
+		}
+		catch(Exception e){
+			json.put("optSts", "1");
+			json.put("optMsg", "失败");
+		}finally{
+			this.sendResponseMessage(json.toString());
+		}
+		return null;
+	}
     
     
     /**

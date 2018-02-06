@@ -1,6 +1,5 @@
 package com.ibm.cdl.manage.service.impl;
 
-import com.ibm.cdl.datamap.constants.Constants;
 import com.ibm.cdl.manage.dao.LicenseDao;
 import com.ibm.cdl.manage.pojo.License;
 import com.ibm.cdl.manage.pojo.User;
@@ -139,17 +138,18 @@ public class LicenseServiceImpl implements LicenseService {
 		}
 		
 		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel()) ||
+//				Constants.USER_DEPT.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		
 		StringBuilder order = new StringBuilder();
 		order.append(" order by l.CREATE_TIME desc");
@@ -244,17 +244,17 @@ public class LicenseServiceImpl implements LicenseService {
 		}
 		
 		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		
 		StringBuilder order = new StringBuilder();
 		order.append(" order by l.CREATE_TIME desc");

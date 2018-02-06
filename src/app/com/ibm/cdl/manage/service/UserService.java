@@ -1,18 +1,25 @@
 package com.ibm.cdl.manage.service;
 
-import java.util.List;
-
 import com.ibm.cdl.manage.pojo.User;
 import com.ibm.core.orm.Page;
+import java.util.List;
 
 public interface UserService {
-	
+
+
+
+	/**
+	 * pc端登录用
+	 * @param userCode
+	 * @param type
+	 * @return
+	 */
 	public User getUserByUserCodeAndTypeForPc(String userCode,String type);
 	
 	/**
 	 * 登录
 	 * @param userCode
-	 * @param password
+	 * @param type
 	 * @return
 	 */
 	public User getUserByUserCodeAndType(String userCode,String type);
@@ -81,6 +88,12 @@ public interface UserService {
 	 * @param currentUser  当前用户信息
 	 */
 	public void saveEntity(User moaUser,User currentUser);
+
+	/**
+	 * 保存用户
+	 * @param moaUser
+	 */
+	public void saveEntity(User moaUser);
 
 	/**
 	 * 查询所有用户
