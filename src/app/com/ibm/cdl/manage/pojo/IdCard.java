@@ -39,7 +39,7 @@ public class IdCard  implements Serializable {
     private String createUser;
 
     // 附件
-    private String attId;
+    private String storePath;
 
     // 创建时间
     private Timestamp createTime = new Timestamp(System.currentTimeMillis());
@@ -116,11 +116,11 @@ public class IdCard  implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getAttId() {
-        return attId;
+    public String getStorePath() {
+        return storePath;
     }
 
-    public void setAttId(String attId) {
-        this.attId = attId;
+    public void setStorePath(String storePath) {
+        this.storePath = storePath;
     }
 }

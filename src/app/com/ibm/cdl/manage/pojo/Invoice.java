@@ -5,6 +5,7 @@ import com.ibm.core.util.excel.annotation.ExcelField;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 发票实体类
@@ -19,7 +20,7 @@ public class Invoice implements Serializable {
 	private String id;
 	// 开票日期
 	@ExcelField(title="开票日期", align=2, sort=1)
-	private String printDate;
+	private Date printDate;
 	// 发票号码
 	@ExcelField(title="发票号码", align=2, sort=2)
 	private String number;
@@ -36,11 +37,12 @@ public class Invoice implements Serializable {
 	@ExcelField(title="价税合计", align=2, sort=6)
 	private BigDecimal tax;
 
+	private String dmsFlag;
 	// 创建人
 	private String createUser;
 
 	// 附件
-	private String attId;
+	private String storePath;
 
 	// 创建时间
 	private Timestamp createTime = new Timestamp(System.currentTimeMillis());;
@@ -71,11 +73,11 @@ public class Invoice implements Serializable {
 		this.number = number;
 	}
 
-	public String getPrintDate() {
+	public Date getPrintDate() {
 		return printDate;
 	}
 
-	public void setPrintDate(String printDate) {
+	public void setPrintDate(Date printDate) {
 		this.printDate = printDate;
 	}
 
@@ -119,11 +121,19 @@ public class Invoice implements Serializable {
 		this.createTime = createTime;
 	}
 
-	public String getAttId() {
-		return attId;
+	public String getStorePath() {
+		return storePath;
 	}
 
-	public void setAttId(String attId) {
-		this.attId = attId;
+	public void setStorePath(String storePath) {
+		this.storePath = storePath;
+	}
+
+	public String getDmsFlag() {
+		return dmsFlag;
+	}
+
+	public void setDmsFlag(String dmsFlag) {
+		this.dmsFlag = dmsFlag;
 	}
 }

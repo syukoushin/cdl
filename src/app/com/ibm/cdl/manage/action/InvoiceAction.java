@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InvoiceAction extends DefaultBaseAction {
@@ -56,7 +57,8 @@ public class InvoiceAction extends DefaultBaseAction {
 			res.setPageNo(pageNo);
 			res = invoiceService.findPage(entity ,res,currentUser);
 			JsonConfig config = new JsonConfig();
-			config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy/MM/dd"));
+			config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
+			config.registerJsonValueProcessor(Date.class,new DateJsonValueProcessor("yyyy-MM-dd"));
 			JSONObject resJson =  JSONObject.fromObject(res, config);
 			json.put("optSts", "0");
 			json.put("data", resJson);

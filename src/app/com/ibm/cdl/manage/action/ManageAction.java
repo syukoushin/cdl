@@ -2,6 +2,7 @@ package com.ibm.cdl.manage.action;
 
 import com.ibm.cdl.attachment.domain.Attachment;
 import com.ibm.cdl.attachment.service.AttachmentService;
+import com.ibm.cdl.datamap.action.DataMapUtils;
 import com.ibm.cdl.datamap.constants.Constants;
 import com.ibm.cdl.manage.pojo.License;
 import com.ibm.cdl.manage.pojo.User;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ManageAction extends DefaultBaseAction {
@@ -50,12 +52,15 @@ public class ManageAction extends DefaultBaseAction {
     public String login(){
 		String userCode = getParameter("userCode");
 		String password = getParameter("passWord");
+		String filePath = "";
 		password = DesUtils.strDec(password, "1","2","3");
 		password = DigestUtils.md5Hex(password);
-		User user = userService.getUserByUserCodeAndTypeForPc(userCode,Constants.USER_FOURTH);
+		User user = userService.getUserByUserCodeAndTypeForPc(userCode,Constants.ADMIN_USER);
 		if(user != null){
 			if(user.getPassword()!= null && password.equals(user.getPassword())){
 				getRequest().getSession().setAttribute("CURRENT_USER", user);
+				filePath = DataMapUtils.getDataMapSub(Constants.SYS_PARAMS,Constants.FILE_SERVER);
+				getRequest().getSession().setAttribute("FILE_PATH",filePath);
 				return  goAction("/manage/Manage_toList.do?tagTopFlag=dbgl&tagFlag=wdjs");
 			} else {
 				return returnScriptAlertWindow("用户名或密码错误");
@@ -95,7 +100,8 @@ public class ManageAction extends DefaultBaseAction {
 			User currentUser = getSessionUser();
 			res = licenseService.findPage(entity ,res,currentUser);
 			JsonConfig config = new JsonConfig();
-			config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy/MM/dd"));
+			config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
+			config.registerJsonValueProcessor(Date.class, new DateJsonValueProcessor("yyyy-MM-dd"));
 			JSONObject resJson =  JSONObject.fromObject(res, config);
 			json.put("optSts", "0");
 			json.put("data", resJson);
@@ -159,7 +165,7 @@ public class ManageAction extends DefaultBaseAction {
 			String oldPwd = getParameter("oldPwd");
 			String password = getParameter("passWord");
 			oldPwd = DigestUtils.md5Hex(oldPwd);
-			User user = userService.getUserByUserCodeAndType(userCode,"1");
+			User user = userService.getUserByUserCodeAndType(userCode,"0");
 			if(oldPwd.equals(user.getPassword())){
 				user.setPassword(DigestUtils.md5Hex(password));
 				getSession().setAttribute("CURRENT_USER", user);

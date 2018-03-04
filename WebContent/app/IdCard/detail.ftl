@@ -96,7 +96,7 @@
 									<tr><td class="span_tdl siyuannormal">身份证图片：</td>
 										<td class="span_tdr siyuannormal" style="position:relative;">
 											<#list attachmentList?if_exists as item>
-												<img width=100px height=100px src="${base}/attachment/download.do?id=${item.id}" onclick="showBigImg(this);">
+                                                <img width=100px height=100px src=${ Session.FILE_PATH}${item.storePath} onclick="showBigImg(this);">
 											</#list>
 										</td>
 									</tr>

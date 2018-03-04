@@ -1,9 +1,9 @@
 package com.ibm.cdl.manage.service.impl;
 
-import com.ibm.cdl.datamap.constants.Constants;
 import com.ibm.cdl.manage.dao.InvoiceDao;
 import com.ibm.cdl.manage.pojo.Invoice;
 import com.ibm.cdl.manage.pojo.User;
+import com.ibm.cdl.manage.service.DmsDataSyncService;
 import com.ibm.cdl.manage.service.InvoiceService;
 import com.ibm.cdl.manage.service.UserService;
 import com.ibm.core.orm.Page;
@@ -13,6 +13,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Autowired
 	private InvoiceDao invoiceDao;
+	@Autowired
+	private DmsDataSyncService dmsDataSyncService;
 
 	/**
 	 * 分页查询历史记录（客户端）
@@ -44,7 +47,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		hql.append("  i.TAX AS tax,");
 		hql.append("  i.CREATE_TIME AS createTime,");
 		hql.append("  i.CREATE_USER AS createUser,");
-		hql.append("  a.ID AS attId");
+		hql.append("  a.STORE_PATH AS storePath");
 		hql.append(" from  ");
 
 		StringBuilder where = new StringBuilder();
@@ -141,18 +144,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 			pMap.put("frameNo", entity.getFrameNo());
 		}
 		
-		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		// 判断创建人
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		StringBuilder order = new StringBuilder();
 		order.append(" order by i.CREATE_TIME desc");
 	
@@ -187,6 +190,37 @@ public class InvoiceServiceImpl implements InvoiceService {
 		invoiceDao.save(entity);
 	}
 
+	public String save(Invoice entity){
+		String flag = "";
+		//判断之前是否上传过该车架号的信息
+		List<Invoice> exitList = invoiceDao.findBy("frameNo",entity.getFrameNo());
+		if(exitList != null && exitList.size() > 0){
+			flag = "3";
+			return flag;
+		}
+		// 保存之前先与dms验证是否实销
+		flag = dmsDataSyncService.checkVin(entity.getFrameNo());
+
+		// 实销的场合，正常保存
+		if("0".equals(flag)){
+			List<Invoice> invoiceList = new ArrayList<Invoice>();
+			invoiceList.add(entity);
+			String toDms = dmsDataSyncService.pushInvoiceDataToDms(invoiceList);
+			// 推送到dms成功的场合
+			if("0".equals(toDms)){
+				entity.setDmsFlag("1");
+				this.addEntity(entity);
+			} else {
+				// 推送dms失败
+				flag = "2";
+			}
+		} else {
+			// dms检测失败
+			flag ="1";
+		}
+		return flag;
+	}
+
 	public void delEntity(String ids) {
 		invoiceDao.delete(ids);
 	}
@@ -196,7 +230,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 		User u = userService.queryUserByLoginName(temp.getCreateUser());
 		Invoice re = new Invoice();
 		BeanUtils.copyProperties(re, temp);
-		re.setCreateUser(u.getUserName());
+		if(u!= null){
+			re.setCreateUser(u.getUserName());
+		}
 		return re;
 	}
 
@@ -238,17 +274,17 @@ public class InvoiceServiceImpl implements InvoiceService {
 		}
 		
 		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID = :groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID = :groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID = :groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID = :groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		StringBuilder order = new StringBuilder();
 		order.append(" order by i.CREATE_TIME desc");
 		

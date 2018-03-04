@@ -7,7 +7,15 @@ import com.ibm.core.orm.Page;
 import java.util.List;
 
 public interface InvoiceService {
-	
+
+
+    /**
+     * 保存发票信息
+     * @param entity
+     * @return
+     */
+    public String save(Invoice entity);
+
 	/**
      * 查找实体列表 （后台）
      */

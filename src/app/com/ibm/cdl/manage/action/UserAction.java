@@ -50,21 +50,22 @@ public class UserAction extends DefaultBaseAction {
 			String name= getParameter("userName");
 			String userCode= getParameter("userCode");
 			String groupId = getParameter("groupId");
-			
+
 			// 检查userCode是否存在
 			if(StringUtils.isNotEmpty(userCode)){
 				if(userService.checkExistUserCode(userCode)){
 					json.put("optSts", "2");
 					json.put("optMsg", "用户名已存在");
 				} else {
-					User enginner = new User();
-					enginner.setUserName(name);
-					enginner.setUserCode(userCode);
-					enginner.setPassword(DigestUtils.md5Hex(Constants.INIT_PWD));
-					enginner.setJobLevel(Constants.USER_ADMIN);
-					enginner.setGroupId(groupId);
+					User engineer = new User();
+					engineer.setUserName(name);
+					engineer.setUserCode(userCode);
+					engineer.setPassword(DigestUtils.md5Hex(Constants.INIT_PWD));
+					engineer.setType(Constants.ADMIN_USER);
+					engineer.setJobLevel(Constants.USER_DEPT);
+					engineer.setGroupId(groupId);
 					User user = getSessionUser();
-					userService.saveEntity(enginner,user);
+					userService.saveEntity(engineer,user);
 					json.put("optSts", "0");
 					json.put("optMsg", "成功");
 				}

@@ -1,9 +1,9 @@
 package com.ibm.cdl.manage.service.impl;
 
-import com.ibm.cdl.datamap.constants.Constants;
 import com.ibm.cdl.manage.dao.LicenseDao;
 import com.ibm.cdl.manage.pojo.License;
 import com.ibm.cdl.manage.pojo.User;
+import com.ibm.cdl.manage.service.DmsDataSyncService;
 import com.ibm.cdl.manage.service.LicenseService;
 import com.ibm.cdl.manage.service.UserService;
 import com.ibm.core.orm.Page;
@@ -13,6 +13,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class LicenseServiceImpl implements LicenseService {
 	private UserService userService;
 	@Autowired
 	private LicenseDao licenseDao;
+	@Autowired
+	private DmsDataSyncService dmsDataSyncService;
 
 	public Page<License> findPageForClient(License entity, Page<License> page) {
 		StringBuilder hql = new StringBuilder();
@@ -40,7 +43,7 @@ public class LicenseServiceImpl implements LicenseService {
 		hql.append ("l.REGIST_DATE as registDate, ");
 		hql.append ("l.PASS_DATE as passDate, ");
 		hql.append ("l.CREATE_TIME as createTime, ");
-		hql.append (" a.ID AS attId");
+		hql.append (" a.STORE_PATH AS storePath");
 		hql.append (" from ");
 		
 		StringBuilder where = new StringBuilder();
@@ -139,17 +142,18 @@ public class LicenseServiceImpl implements LicenseService {
 		}
 		
 		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel()) ||
+//				Constants.USER_DEPT.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		
 		StringBuilder order = new StringBuilder();
 		order.append(" order by l.CREATE_TIME desc");
@@ -185,6 +189,44 @@ public class LicenseServiceImpl implements LicenseService {
 		licenseDao.save(entity);
 	}
 
+	/**
+	 * 保存实体
+	 * @param entity
+	 * @return
+	 */
+	public String save(License entity){
+
+		String flag ="";
+
+		//判断之前是否上传过该车架号的信息
+		List<License> exitList = licenseDao.findBy("carNo",entity.getCardNo());
+		if(exitList != null && exitList.size() > 0){
+			flag = "3";
+			return flag;
+		}
+
+		// 保存之前先与dms验证是否实销
+		flag = dmsDataSyncService.checkVin(entity.getCarNo());
+
+		// 实销的场合，正常保存
+		if("0".equals(flag)){
+			List<License> licensesList = new ArrayList<License>();
+			licensesList.add(entity);
+			String toDms = dmsDataSyncService.pushLicenseDataToDms(licensesList);
+			// 推送到dms成功的场合
+			if("0".equals(toDms)){
+				entity.setDmsFlag("1");
+				this.addEntity(entity);
+			} else {
+				// 推送dms失败
+				flag = "2";
+			}
+		} else {
+			// dms检测失败
+			flag ="1";
+		}
+		return flag;
+	}
 	public void delEntity(String ids) {
 		licenseDao.delete(ids);
 	}
@@ -194,7 +236,9 @@ public class LicenseServiceImpl implements LicenseService {
 		User u = userService.queryUserByLoginName(temp.getCreateUser());
 		License re = new License();
 		BeanUtils.copyProperties(re, temp);
-		re.setCreateUser(u.getUserName());
+		if(u!= null){
+			re.setCreateUser(u.getUserName());
+		}
 		return re;
 	}
 
@@ -244,17 +288,17 @@ public class LicenseServiceImpl implements LicenseService {
 		}
 		
 		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		
 		StringBuilder order = new StringBuilder();
 		order.append(" order by l.CREATE_TIME desc");

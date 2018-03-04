@@ -83,12 +83,12 @@
 								</tr>
 								<tr ><td class="span_tdl siyuannormal">注册日期：</td>
 									<td  class="span_tdr siyuannormal">
-									${entity.registDate?if_exists}
+									${entity.registDate?string("yyyy-MM-dd")}
 									</td>
 								</tr>
 								<tr><td class="span_tdl siyuannormal">发证日期：</td>
 									<td  class="span_tdr siyuannormal">
-									${entity.passDate?if_exists}
+									${entity.passDate?string("yyyy-MM-dd")}
 								</td>
 								<tr><td class="span_tdl siyuannormal">上传时间：</td>
 									<td  class="span_tdr siyuannormal">
@@ -102,7 +102,7 @@
 									<tr><td class="span_tdl siyuannormal">行驶证图片：</td>
 										<td class="span_tdr siyuannormal" style="position:relative;">
 											<#list attachmentList?if_exists as item>
-												<img width=100px height=100px src="${base}/attachment/download.do?id=${item.id}" onclick="showBigImg(this);">
+												<img width=100px height=100px src=${ Session.FILE_PATH}${item.storePath} onclick="showBigImg(this);">
 											</#list>
 										</td>
 									</tr>

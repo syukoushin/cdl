@@ -73,7 +73,7 @@
 	</package>
 	
 	<!-- 接口 -->
-	<package name="portal" extends="my-struts-global-package" namespace="/portal">
+		<package name="portal" extends="my-struts-global-package" namespace="/portal">
 		<action name="*" class="com.ibm.cdl.portal.action.PortalAction" method="{1}">
 			<result name="success" type="freemarker">/app/portal/index.ftl</result>
 		</action>

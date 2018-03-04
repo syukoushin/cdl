@@ -4,6 +4,7 @@ import com.ibm.core.util.excel.annotation.ExcelField;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 行驶证实体类
@@ -38,18 +39,20 @@ public class License implements Serializable {
 	private String enginNo;
 	// 注册日期
 	@ExcelField(title="注册日期", align=2, sort=7)
-	private String registDate;
+	private Date registDate;
 	// 发证日期
 	@ExcelField(title="发证日期", align=2, sort=8)
-	private String passDate;
+	private Date passDate;
 	// 使用性质
 	private String useType;
+
+	private String dmsFlag;
 	
 	// 创建人
 	private String createUser;
 
 	// 附件
-	private String attId;
+	private String storePath;
 
 	// 创建时间
 	private Timestamp createTime = new Timestamp(System.currentTimeMillis());
@@ -118,19 +121,19 @@ public class License implements Serializable {
 		this.enginNo = enginNo;
 	}
 
-	public String getRegistDate() {
+	public Date getRegistDate() {
 		return registDate;
 	}
 
-	public void setRegistDate(String registDate) {
+	public void setRegistDate(Date registDate) {
 		this.registDate = registDate;
 	}
 
-	public String getPassDate() {
+	public Date getPassDate() {
 		return passDate;
 	}
 
-	public void setPassDate(String passDate) {
+	public void setPassDate(Date passDate) {
 		this.passDate = passDate;
 	}
 
@@ -158,11 +161,19 @@ public class License implements Serializable {
 		this.createTime = createTime;
 	}
 
-	public String getAttId() {
-		return attId;
+	public String getStorePath() {
+		return storePath;
 	}
 
-	public void setAttId(String attId) {
-		this.attId = attId;
+	public void setStorePath(String storePath) {
+		this.storePath = storePath;
+	}
+
+	public String getDmsFlag() {
+		return dmsFlag;
+	}
+
+	public void setDmsFlag(String dmsFlag) {
+		this.dmsFlag = dmsFlag;
 	}
 }

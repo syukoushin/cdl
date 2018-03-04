@@ -1,12 +1,19 @@
 package com.ibm.cdl.manage.service;
 
-import java.util.List;
-
 import com.ibm.cdl.manage.pojo.License;
 import com.ibm.cdl.manage.pojo.User;
 import com.ibm.core.orm.Page;
 
+import java.util.List;
+
 public interface LicenseService {
+
+    /**
+     * 保存发票信息，保存之前先调用与dms接口
+     * @param entity
+     * @return
+     */
+    public String save(License entity);
 	
 	/**
      * 查找实体列表

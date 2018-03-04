@@ -55,11 +55,11 @@
 				<div class="mask_content_con">
 					<p><span class="span_left">姓名：</span><input name="name" style="font-family:'微软雅黑';" type="text" placeholder="请输入姓名" /></p>
 					<p><span class="span_left">用户名：</span><input name="userCode" style="font-family:'微软雅黑';" type="text" placeholder="请输入用户名" /></p>
-					<#if Session.CURRENT_USER.jobLevel =='1'>
-						<p><span class="span_left">所在公司：</span>
-						<select class="select3" style="font-family:'微软雅黑';" type="text" placeholder="请输入用户名" name="groupId" onchange="showGroup()" id ="groupId"></select>
-						</p>
-					</#if>
+					<#--<#if Session.CURRENT_USER.jobLevel =='1'>-->
+						<#--<p><span class="span_left">所在公司：</span>-->
+						<#--<select class="select3" style="font-family:'微软雅黑';" type="text" placeholder="请输入用户名" name="groupId" onchange="showGroup()" id ="groupId"></select>-->
+						<#--</p>-->
+					<#--</#if>-->
 				</div>
 				<div class="mask_content_bot mt4">
 					<input onclick="addMember();" type="button" value="确定" class="confirm"/>
@@ -74,11 +74,11 @@
 				<input type="hidden" name="id" type="text" />
 					<p><span class="span_left">姓名：</span><input name="nameE" type="text"/></p>
 					<p><span class="span_left">用户名：</span><input name="userCodeE" type="text"/></p>
-					<#if Session.CURRENT_USER.jobLevel =='1'>
-						<p><span class="span_left">所在公司：</span>
-						<select class="select3" style="font-family:'微软雅黑';" type="text" placeholder="请输入用户名" name="groupIdE" onchange="showGroupEdit()" id ="groupIdEdit"></select>
-						</p>
-					</#if>
+					<#--<#if Session.CURRENT_USER.jobLevel =='1'>-->
+						<#--<p><span class="span_left">所在公司：</span>-->
+						<#--<select class="select3" style="font-family:'微软雅黑';" type="text" placeholder="请输入用户名" name="groupIdE" onchange="showGroupEdit()" id ="groupIdEdit"></select>-->
+						<#--</p>-->
+					<#--</#if>-->
 				</div>
 				<div class="mask_content_bot mt4">
 					<input onclick="updateMember();" type="button" value="确定" class="confirm"/>
@@ -110,7 +110,7 @@
 </script>
 <script>
 	$(document).ready(function(){
-		showGroup();
+		/*showGroup();*/
 	})
 	function rePassword(id){
 		var param ={};
@@ -136,7 +136,6 @@
 	}
 	
 	function showGroup() {
-		// 
 		$.ajax({
             url: '${base}/manage/Group_ajaxFindList.do',
             type: "post",
@@ -160,7 +159,6 @@
 	}
 	
 	function showGroupEdit() {
-		// 
 		$.ajax({
             url: '${base}/manage/Group_ajaxFindList.do',
             type: "post",
@@ -186,13 +184,13 @@
 	function updateMember(){
 		var param={};
 		var nameE= $("input[name='nameE']").val();
-		var groupIdE= $("select[name='groupIdE']").val();
+/*//		var groupIdE= $("select[name='groupIdE']").val();*/
 		if(!nameE){alert("请填写姓名"); return};
 		var userCodeE =$("input[name='userCodeE']").val();
 		if(!userCodeE){alert("请填写用户名"); return};
 		param["userName"]= nameE;
 		param["userCode"]= userCodeE;
-		param["groupId"]= groupIdE;
+///*		param["groupId"]= groupIdE;*/
 		param["id"]=$("input[name='id']").val();
 		$.ajax({
             url: '${base}/manage/User_ajaxUpdateEntity.do',
@@ -252,10 +250,10 @@
                 	$("input[name='nameE']").val(data.userName);
                 	$("input[name='userCodeE']").val(data.userCode);
                 	$("input[name='id']").val(data.id);
-                	$("#groupId").val(data.group);
+/*//                	$("#groupId").val(data.group);*/
                 	$("#editWindow").show();
                 	$(".mask_box").show();
-                	showGroupEdit();
+                	/*showGroupEdit();*/
                 } else {
                 	alert("编辑失败");
                 }
@@ -273,11 +271,6 @@
 		 if(!name){alert("请填写姓名"); return};
 		 var userCode = $("input[name='userCode']").val();
 		 if(!userCode){alert("请填写用户名"); return};
-		 <#if Session.CURRENT_USER.jobLevel=='1'>
-			 var groupId = $("#groupId").val();
-			 if(!groupId){alert("请选择公司"); return};
-			 param["groupId"] = groupId;
-		 </#if>
 		 param["userName"] = name;
 		 param["userCode"] = userCode;
 		 $.ajax({

@@ -8,9 +8,11 @@ import com.ibm.cdl.manage.service.*;
 import com.ibm.core.action.DefaultBaseAction;
 import com.ibm.core.orm.Page;
 import com.ibm.core.util.DateJsonValueProcessor;
+import com.ibm.core.util.EncodeUtils;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -21,10 +23,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 客户端接口
+ */
 public class PortalAction extends DefaultBaseAction {
 	
 	/**
-	 * 
+	 * 序列id
 	 */
 	private static final long serialVersionUID = 1L;
 	@Autowired
@@ -44,7 +49,11 @@ public class PortalAction extends DefaultBaseAction {
 	private String[] attachFileContentType;                 //附件类型
 	private List<Attachment> attachments = new ArrayList<Attachment>();               //附件列表
 	private String resultJSON=null;
-    
+
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd");
+	private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyy-mm-dd");
+
+
     /**
      * app登录
      * @return
@@ -60,7 +69,7 @@ public class PortalAction extends DefaultBaseAction {
 				json.put("optMsg", "参数错误");
 			}
 			password = DigestUtils.md5Hex(password);
-			User user = userService.getUserByUserCodeAndType(userCode,Constants.USER_ADMIN);
+			User user = userService.getUserByUserCodeAndType(userCode,Constants.APP_USER);
 			if(user != null){
 				if(user.getPassword()!= null && password.equals(user.getPassword())){
 					json.put("optSts", "0");
@@ -83,6 +92,51 @@ public class PortalAction extends DefaultBaseAction {
 		}
 		return null;
     }
+
+	/**
+	 *
+	 * 注册
+	 * @return
+	 */
+	public String regist() {
+		JSONObject json = new JSONObject();
+		try{
+			String password= getParameter("password");
+			String userCode= getParameter("phoneNumber");
+			String userName = getParameter("userName");
+			String deptName = getParameter("deptName");
+
+			// 检查userCode是否存在
+			if(StringUtils.isNotEmpty(userCode) && StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(deptName)){
+				if(userService.checkExistUserCode(userCode)){
+					json.put("optSts", "2");
+					json.put("optMsg", "该用户已存在");
+				} else {
+					User engineer = new User();
+					engineer.setUserName(userName);
+					engineer.setUserCode(userCode);
+					engineer.setPassword(DigestUtils.md5Hex(password));
+					engineer.setDeptName(deptName);
+					engineer.setJobLevel(Constants.USER_COMMON);
+					engineer.setType(Constants.APP_USER);
+					userService.saveEntity(engineer);
+					json.put("optSts", "0");
+					json.put("optMsg", "成功");
+				}
+			} else {
+				json.put("optSts", "1");
+				json.put("optMsg", "用户名为空");
+			}
+
+		}
+		catch(Exception e){
+			json.put("optSts", "1");
+			json.put("optMsg", "失败");
+		}finally{
+			this.sendResponseMessage(json.toString());
+		}
+		return null;
+	}
     
     
     /**
@@ -110,16 +164,36 @@ public class PortalAction extends DefaultBaseAction {
 			license.setCardNo(cardNo);
 			license.setCarType(carType);
 			license.setEnginNo(enginNo);
-			license.setRegistDate(registDate);
-			license.setPassDate(passDate);
+			if(registDate.contains("-")){
+				license.setRegistDate(sdf2.parse(registDate));
+			} else {
+				license.setRegistDate(sdf.parse(registDate));
+			}
+			if(passDate.contains("-")){
+				license.setPassDate(sdf2.parse(passDate));
+			} else {
+				license.setPassDate(sdf.parse(passDate));
+			}
 			license.setUseType(useType);
 			license.setName(name);
+			license.setDmsFlag("0");
 			license.setCreateUser(createUser);
 			
-			licenseService.addEntity(license);
-			json.put("optSts", "0");
-			json.put("objId", license.getId());
-			json.put("optMsg", "成功");
+			String result = licenseService.save(license);
+			if("0".equals(result)){
+				json.put("optSts", "0");
+				json.put("objId", license.getId());
+				json.put("optMsg", "成功");
+			} else if("1".equals(result)){
+				json.put("optSts","1");
+				json.put("optMsg", "dms库中不存在此车");
+			} else if("2".equals(result)){
+				json.put("optSts","2");
+				json.put("optMsg", "推送dms系统失败");
+			} else if("3".equals(result)){
+				json.put("optSts","2");
+				json.put("optMsg", "该行驶证信息已存在");
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -147,20 +221,35 @@ public class PortalAction extends DefaultBaseAction {
     		String createUser = getParameter("createUser");
     		Invoice invoice = new Invoice();
     		invoice.setName(name);
-    		invoice.setPrintDate(printDate);
+			if(printDate.contains("-")){
+				invoice.setPrintDate(sdf2.parse(printDate));
+			} else {
+				invoice.setPrintDate(sdf.parse(printDate));
+			}
     		invoice.setInvoiceNo(invoiceNo);
     		invoice.setNumber(number);
     		invoice.setFrameNo(frameNo);
     		invoice.setTax(new BigDecimal(tax));
     		invoice.setCreateUser(createUser);
-    		invoiceService.addEntity(invoice);
-    		json.put("optSts", "0");
-    		json.put("objId", invoice.getId());
-    		json.put("optMsg", "成功");
-    		
+			invoice.setDmsFlag("0");
+    		String result = invoiceService.save(invoice);
+			if("0".equals(result)){
+				json.put("optSts", "0");
+				json.put("objId", invoice.getId());
+				json.put("optMsg", "成功");
+			} else if("1".equals(result)){
+				json.put("optSts","1");
+				json.put("optMsg", "dms库中不存在此车");
+			} else if("2".equals(result)){
+				json.put("optSts","2");
+				json.put("optMsg", "推送dms系统失败");
+			} else if("3".equals(result)){
+				json.put("optSts","3");
+				json.put("optMsg", "该发票信息已存在");
+			}
     	}catch(Exception e){
     		e.printStackTrace();
-    		json.put("optSts", "1");
+    		json.put("optSts", "-1");
     		json.put("optMsg", "添加失败");
     	}finally{
     		this.sendResponseMessage(json.toString());
@@ -253,7 +342,9 @@ public class PortalAction extends DefaultBaseAction {
     		
     		String type = getParameter("type");
     		String userCode = getParameter("userCode");
-
+			JsonConfig config = new JsonConfig();
+			config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy-MM-dd hh:mm:ss"));
+			config.registerJsonValueProcessor(Date.class,new DateJsonValueProcessor("yyyy-MM-dd"));
     		// 判断分类 查询的是 什么的分页, 行驶证的场合
     		if(Constants.SHOW_TYPE_LICENSE.equals(type)){
     			License entity = new License();
@@ -263,8 +354,7 @@ public class PortalAction extends DefaultBaseAction {
     			page.setPageSize(pageSize);
     			Page<License> result = licenseService.findPageForClient(entity, page);
     			json.put("optSts", "0");
-    			JsonConfig config = new JsonConfig();
-    			config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy/MM/dd hh:mm:ss"));
+
     			JSONObject resJson =  JSONObject.fromObject(result, config);
     			json.put("data", resJson);
         		json.put("optMsg", "请求成功");
@@ -278,8 +368,6 @@ public class PortalAction extends DefaultBaseAction {
 				page.setPageSize(pageSize);
 				Page<Invoice> result = invoiceService.findPageForClient(entity, page);
 				json.put("optSts", "0");
-				JsonConfig config = new JsonConfig();
-				config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy/MM/dd hh:mm:ss"));
 				JSONObject resJson =  JSONObject.fromObject(result, config);
 				json.put("data", resJson);
 				json.put("optMsg", "请求成功");
@@ -293,8 +381,6 @@ public class PortalAction extends DefaultBaseAction {
 				page.setPageSize(pageSize);
 				Page<IdCard> result = idCardService.findPageForClient(entity, page);
 				json.put("optSts", "0");
-				JsonConfig config = new JsonConfig();
-				config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy/MM/dd hh:mm:ss"));
 				JSONObject resJson =  JSONObject.fromObject(result, config);
 				json.put("data", resJson);
 				json.put("optMsg", "请求成功");
@@ -307,8 +393,6 @@ public class PortalAction extends DefaultBaseAction {
 				page.setPageSize(pageSize);
 				Page<BusinessLicense> result = businessLicenseService.findPageForClient(entity, page);
 				json.put("optSts", "0");
-				JsonConfig config = new JsonConfig();
-				config.registerJsonValueProcessor(Timestamp.class,new DateJsonValueProcessor("yyyy/MM/dd hh:mm:ss"));
 				JSONObject resJson =  JSONObject.fromObject(result, config);
 				json.put("data", resJson);
 				json.put("optMsg", "请求成功");
@@ -337,12 +421,15 @@ public class PortalAction extends DefaultBaseAction {
 			String id = getParameter("id");
 			String createUser = getParameter("createUser");
 			if(attachFile != null && attachFile.length > 0){
-				SimpleDateFormat sft = new SimpleDateFormat("yyyyMMdd");
-				String time = sft.format(new Date());
-				String attachId = attachmentService.saveAttachmentSingle(id,createUser,attachFile[0],
-						attachFileFileName[0],attachFileContentType[0],time+File.separator+createUser+File.separator);
-				json.put("fileName", attachFileFileName[0]);
-				json.put("attachId", attachId);
+				String attachId = attachmentService.saveAttachment(id, createUser, attachFile[0],
+						attachFileFileName[0], attachFileContentType[0]);
+				if(attachId == null){
+					json.put("optSts", "2");
+					json.put("optMsg", "文件服务器保存附件失败");
+				} else {
+					json.put("fileName", attachFileFileName[0]);
+					json.put("attachId", attachId);
+				}
 			}
 			json.put("optSts", "0");
 			json.put("optMsg", "保存附件成功");
@@ -396,28 +483,9 @@ public class PortalAction extends DefaultBaseAction {
 		this.resultJSON = resultJSON;
 	}
 
-	
-	/**
-	 * 客户端获取请求参数
-	 * @param key
-	 * @return
-	 */
-//	protected String getParameter(String key) {
-//		
-//		String result = "";
-//		
-//		result = getRequest().getParameter(key);
-//		
-//		String te="";
-//		try {
-//			if (StringUtils.isNotEmpty(result)) {
-//				te = new String(result.getBytes("iso8859-1"),"utf-8");
-//			} else {
-//				return null;
-//			}
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-//		return te;
-//	}
+	public static void main(String[] arg){
+		String name = "木村崔仔";
+		String after = EncodeUtils.urlEncode(name);
+		System.out.println(after);
+	}
 }

@@ -32,14 +32,17 @@
         <property name="bandNo" type="java.lang.String">
             <column name="BAND_NO"/>
         </property>
-        <property name="registDate" type="java.lang.String">
+        <property name="registDate" type="java.util.Date">
             <column name="REGIST_DATE"/>
         </property>
-        <property name="passDate" type="java.lang.String">
+        <property name="passDate" type="java.util.Date">
             <column name="PASS_DATE"/>
         </property>
         <property name="enginNo" type="java.lang.String">
             <column name="ENGIN_NO"/>
+        </property>
+        <property name="dmsFlag" type="java.lang.String">
+            <column name="DMS_FLAG"/>
         </property>
         <property name="createTime" type="java.sql.Timestamp">
             <column name="CREATE_TIME"/>

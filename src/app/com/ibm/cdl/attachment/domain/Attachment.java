@@ -21,10 +21,19 @@ public class Attachment implements java.io.Serializable {
 	private String attachType;  //附件类型
 	private String storeName;	//附件存储名称
 	private String storePath; 	//附件存储路径
+	private String attactType;
 	private String businessId;  //业务ID
 	private String createUser;	//创建人
 	private Date createDate;	//创建时间
-	
+
+	public String getAttactType() {
+		return attactType;
+	}
+
+	public void setAttactType(String attactType) {
+		this.attactType = attactType;
+	}
+
 	public String getId() {
 		return id;
 	}

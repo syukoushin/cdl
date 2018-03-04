@@ -6,23 +6,34 @@ public class Constants {
 	public final static String  INIT_PWD ="111111";
 	//系统参数
 	public static String SYS_PARAMS = "SYS_PARAMS";
+
+	// weedfs 相关配置
+	public static String WEED_FS ="WEED_FS";
+	// base_url
+	public static String BASE_URL = "BASE_URL";
+	// upload
+	public static String UPLOAD ="UPLOAD";
 	// 版本号
 	public static String VERSION = "VERSION";
 	//加密过滤地址
 	public static String SYS_PARAMS_DECRYPT = "SYS_PARAMS_DECRYPT";
 	//过滤通用接口的参数
 	public static String SYS_PARAM_LOG_METHOD = "SYS_PARAM_LOG_METHOD";
-	
-	// 用户级别
-	public static String USER_TYPE = "USER_LEVEL";
+
+	// 用户类型
+	// app用户
+	public static String APP_USER = "1";
+	// 后台用户
+	public static String ADMIN_USER = "0";
+
+
+
 	// 一级 顶级管理员
 	public static String USER_ADMIN = "1";
-	// 二级  分公司管理员 可分配三级
-	public static String USER_SECOND = "2";
 	// 三级  分公司管理员
-	public static String USER_THIRD = "3";
+	public static String USER_DEPT = "2";
 	// 四级 没有登陆后台的权限
-	public static String USER_FOURTH = "4";
+	public static String USER_COMMON = "3";
 	
 	
 	
@@ -49,5 +60,14 @@ public class Constants {
 	public static String MENU_USER = "user";
 
 	public static String MENU_GROUP ="group";
-	
+
+	//附件访问相关
+	public static String FILE_SERVER = "FILE_SERVER";
+	public static String FILE_CREATE_PATH = "FILE_CREATE_PATH";
+	public static String FILE_PATH = "FILE_PATH";
+
+	//与DMS系统相关
+	public static String DMS_INFO ="DMS_INFO";
+	public static String DMS_USER_NAME = "DMS_USER_NAME";
+	public static String DMS_PASSWORD ="DMS_PASSWORD";
 }

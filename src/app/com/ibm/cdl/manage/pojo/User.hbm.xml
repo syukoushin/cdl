@@ -19,17 +19,14 @@
         <property name="mail" type="java.lang.String">
             <column name="MAIL"/>
         </property>
-        <property name="telephone" type="java.lang.String">
-            <column name="TELEPHONE"/>
-        </property>
         <property name="mobile" type="java.lang.String">
             <column name="MOBILE"/>
         </property>
-        <property name="idCardNum" type="java.lang.String">
-            <column name="IDCARDNUM"/>
-        </property>
         <property name="deptCode" type="java.lang.String">
             <column name="DEPT_CODE"/>
+        </property>
+        <property name="deptName" type="java.lang.String">
+            <column name="DEPT_NAME"/>
         </property>
         <property name="jobLevel" type="java.lang.String">
             <column name="JOB_LEVEL"/>

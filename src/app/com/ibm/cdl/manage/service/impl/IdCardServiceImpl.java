@@ -1,6 +1,5 @@
 package com.ibm.cdl.manage.service.impl;
 
-import com.ibm.cdl.datamap.constants.Constants;
 import com.ibm.cdl.manage.dao.IdCardDao;
 import com.ibm.cdl.manage.pojo.IdCard;
 import com.ibm.cdl.manage.pojo.User;
@@ -45,7 +44,7 @@ public class IdCardServiceImpl implements IdCardService {
 		hql.append (" l.ETHNIC as ethnic,");
 		hql.append (" l.CREATE_USER as createUser, ");
 		hql.append (" l.CREATE_TIME as createTime, ");
-		hql.append ("  a.ID AS attId");
+		hql.append ("  a.STORE_PATH AS storePath");
 		hql.append (" from ");
 		
 		StringBuilder where = new StringBuilder();
@@ -144,17 +143,17 @@ public class IdCardServiceImpl implements IdCardService {
 		}
 		
 		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		
 		StringBuilder order = new StringBuilder();
 		order.append(" order by l.CREATE_TIME desc");
@@ -247,20 +246,18 @@ public class IdCardServiceImpl implements IdCardService {
 			pMap.put("ethnic",entity.getEthnic());
 		}
 
-
-		
-		// 判断创建人
-		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
-			
-		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
-			where.append(" and u.GROUP_ID =:groupId ");
-			pMap.put("groupId", currentUser.getGroupId());
-			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
-			pMap.put("createBy", currentUser.getUserCode());
-		}
+//		// 判断创建人
+//		if(Constants.USER_ADMIN.equals(currentUser.getJobLevel())){
+//
+//		} else if(Constants.USER_SECOND.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//		} else if(Constants.USER_THIRD.equals(currentUser.getJobLevel())){
+//			where.append(" and u.GROUP_ID =:groupId ");
+//			pMap.put("groupId", currentUser.getGroupId());
+//			where.append(" and (u.CREATE_BY =:createBy or u.USER_CODE = :createBy) ");
+//			pMap.put("createBy", currentUser.getUserCode());
+//		}
 		
 		StringBuilder order = new StringBuilder();
 		order.append(" order by l.CREATE_TIME desc");
