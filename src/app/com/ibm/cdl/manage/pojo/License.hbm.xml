@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ibm.cdl.manage.pojo.License" table="license">
+    
+        <id name="id" type="java.lang.String">
+            <column name="ID" />
+            <generator class="uuid.hex"/>
+        </id>
+ 		<property name="name" type="java.lang.String">
+            <column name="NAME"/>
+        </property>
+ 		<property name="createUser" type="java.lang.String">
+            <column name="CREATE_USER"/>
+        </property>
+        <property name="useType" type="java.lang.String">
+            <column name="USE_TYPE"/>
+        </property>
+        <property name="cardNo" type="java.lang.String">
+            <column name="CARD_NO"/>
+        </property>
+        <property name="carNo" type="java.lang.String">
+            <column name="CAR_NO"/>
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="ADDRESS"/>
+        </property>
+        <property name="carType" type="java.lang.String">
+            <column name="CAR_TYPE"/>
+        </property>
+        <property name="bandNo" type="java.lang.String">
+            <column name="BAND_NO"/>
+        </property>
+        <property name="registDate" type="java.util.Date">
+            <column name="REGIST_DATE"/>
+        </property>
+        <property name="passDate" type="java.util.Date">
+            <column name="PASS_DATE"/>
+        </property>
+        <property name="enginNo" type="java.lang.String">
+            <column name="ENGIN_NO"/>
+        </property>
+        <property name="dmsFlag" type="java.lang.String">
+            <column name="DMS_FLAG"/>
+        </property>
+        <property name="createTime" type="java.sql.Timestamp">
+            <column name="CREATE_TIME"/>
+        </property>
+    </class>
+</hibernate-mapping>
