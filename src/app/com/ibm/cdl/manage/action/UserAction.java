@@ -57,6 +57,7 @@ public class UserAction extends DefaultBaseAction {
 					json.put("optSts", "2");
 					json.put("optMsg", "用户名已存在");
 				} else {
+<<<<<<< HEAD
 					User engineer = new User();
 					engineer.setUserName(name);
 					engineer.setUserCode(userCode);
@@ -64,6 +65,15 @@ public class UserAction extends DefaultBaseAction {
 					engineer.setType(Constants.ADMIN_USER);
 					engineer.setJobLevel(Constants.USER_DEPT);
 					engineer.setGroupId(groupId);
+=======
+					User enginner = new User();
+					enginner.setUserName(name);
+					enginner.setUserCode(userCode);
+					enginner.setPassword(DigestUtils.md5Hex(Constants.INIT_PWD));
+					enginner.setType(Constants.ADMIN_USER);
+					enginner.setJobLevel(Constants.USER_DEPT);
+					enginner.setGroupId(groupId);
+>>>>>>> origin/mouse
 					User user = getSessionUser();
 					userService.saveEntity(engineer,user);
 					json.put("optSts", "0");

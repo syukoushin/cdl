@@ -112,6 +112,7 @@ public class PortalAction extends DefaultBaseAction {
 					json.put("optSts", "2");
 					json.put("optMsg", "该用户已存在");
 				} else {
+<<<<<<< HEAD
 					User engineer = new User();
 					engineer.setUserName(userName);
 					engineer.setUserCode(userCode);
@@ -120,6 +121,17 @@ public class PortalAction extends DefaultBaseAction {
 					engineer.setJobLevel(Constants.USER_COMMON);
 					engineer.setType(Constants.APP_USER);
 					userService.saveEntity(engineer);
+=======
+					User enginner = new User();
+					enginner.setUserName(userName);
+					enginner.setUserCode(userCode);
+					enginner.setPassword(DigestUtils.md5Hex(password));
+					enginner.setDeptName(deptName);
+					enginner.setJobLevel(Constants.USER_DEPT);
+					enginner.setType(Constants.APP_USER);
+					User user = getSessionUser();
+					userService.saveEntity(enginner);
+>>>>>>> origin/mouse
 					json.put("optSts", "0");
 					json.put("optMsg", "成功");
 				}

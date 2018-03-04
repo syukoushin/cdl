@@ -27,7 +27,12 @@ public class Constants {
 	public static String ADMIN_USER = "0";
 
 
+<<<<<<< HEAD
 
+=======
+	// 用户级别
+	public static String USER_TYPE = "USER_LEVEL";
+>>>>>>> origin/mouse
 	// 一级 顶级管理员
 	public static String USER_ADMIN = "1";
 	// 三级  分公司管理员
