@@ -31,7 +31,13 @@ public interface BusinessLicenseService {
 	/**
 	 * 添加实体
 	 */
-	void addEntity(BusinessLicense image);
+	void addEntity(BusinessLicense entity);
+
+	/**
+	 * 添加或更新实体
+	 * @param entity
+	 */
+	void save(BusinessLicense entity);
 
 	/**
 	 * 删除实体

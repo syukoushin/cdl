@@ -4,6 +4,7 @@ import com.ibm.core.util.excel.annotation.ExcelField;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by zhuxiangxin on 2018/1/25.
@@ -18,7 +19,7 @@ public class IdCard  implements Serializable {
     private  String name;
 
     @ExcelField(title = "生日", align = 2,sort = 5)
-    private  String birthDay;
+    private Date birthDay;
     // 住址
     @ExcelField(title="住址", align=2, sort=6)
     private String address;
@@ -80,11 +81,11 @@ public class IdCard  implements Serializable {
         return cardNo;
     }
 
-    public String getBirthDay() {
+    public Date getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(String birthDay) {
+    public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
 

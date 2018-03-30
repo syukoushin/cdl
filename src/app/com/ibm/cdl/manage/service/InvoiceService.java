@@ -36,6 +36,7 @@ public interface InvoiceService {
      */
     List<Invoice> findListBy(Invoice entity,User user);
 
+
     
     /**
      * 添加实体

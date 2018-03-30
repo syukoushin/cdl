@@ -90,25 +90,35 @@ public class UserAction extends DefaultBaseAction {
 	public String ajaxUpdateEntity(){
 		JSONObject json = new JSONObject();
 		try{
+			boolean exist = false;
 			String id = getParameter("id");
 			String name= getParameter("userName");
 			String userCode= getParameter("userCode");
 			String groupId = getParameter("groupId");
 			// 检查userCode是否存在
 			if(StringUtils.isNotEmpty(id)){
-				
-				// 检查userCode是否存在
-				if(StringUtils.isNotEmpty(id)){
-					User user = userService.queryUserById(id);
-					user.setUserCode(userCode);
-					user.setUserName(name);
-					user.setGroupId(groupId);
-					userService.updateEntity(user);
-					json.put("optSts", "0");
-					json.put("optMsg", "成功");
-				} else {
-					json.put("optSts", "3");
-					json.put("optMsg", "参数错误");
+				User temp =(User) userService.get(id);
+				if(temp != null && !temp.getUserCode().equals(userCode)){
+					if(userService.checkExistUserCode(userCode)){
+						json.put("optSts", "2");
+						json.put("optMsg", "用户名已存在");
+						exist = true;
+					}
+				}
+				if(!exist){
+					// 检查userCode是否存在
+					if(StringUtils.isNotEmpty(id)){
+						User user = userService.queryUserById(id);
+						user.setUserCode(userCode);
+						user.setUserName(name);
+						user.setGroupId(groupId);
+						userService.updateEntity(user);
+						json.put("optSts", "0");
+						json.put("optMsg", "成功");
+					} else {
+						json.put("optSts", "3");
+						json.put("optMsg", "参数错误");
+					}
 				}
 			} else {
 				json.put("optSts", "1");
@@ -221,8 +231,9 @@ public class UserAction extends DefaultBaseAction {
     public String modifyPwd(){
     	JSONObject json = new JSONObject();
 		try{
-			String userCode = getParameter("userCode");
-			User u = userService.getUserByUserCode(userCode);
+//			String userCode = getParameter("userCode");
+			String id = getParameter("id");
+			User u =(User) userService.get(id);
 			if(u == null){
 			} else {
 				u.setPassword(DigestUtils.md5Hex(Constants.INIT_PWD));

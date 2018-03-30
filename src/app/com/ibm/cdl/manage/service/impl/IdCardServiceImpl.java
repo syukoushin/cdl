@@ -1,5 +1,6 @@
 package com.ibm.cdl.manage.service.impl;
 
+import com.ibm.cdl.attachment.service.AttachmentService;
 import com.ibm.cdl.manage.dao.IdCardDao;
 import com.ibm.cdl.manage.pojo.IdCard;
 import com.ibm.cdl.manage.pojo.User;
@@ -25,6 +26,8 @@ public class IdCardServiceImpl implements IdCardService {
 
 	@Autowired
 	private  UserService userService;
+	@Autowired
+	private AttachmentService attachmentService;
 
 	/**
 	 * 分页获取历史记录（客户端用）
@@ -187,6 +190,29 @@ public class IdCardServiceImpl implements IdCardService {
 	
 	public void addEntity(IdCard entity) {
 		idCardDao.save(entity);
+	}
+
+	public void save(IdCard entity){
+		IdCard updateEntity = new IdCard();
+		// 判断是否上传过
+		List<IdCard> entityList = idCardDao.findBy("cardNo",entity.getCardNo());
+		if(entityList != null && entityList.size() > 0){
+			IdCard temp = entityList.get(0);
+			updateEntity = idCardDao.get(temp.getId());
+			updateEntity.setCreateUser(entity.getCreateUser());
+			updateEntity.setAddress(entity.getAddress());
+			updateEntity.setBirthDay(entity.getBirthDay());
+			updateEntity.setCardNo(entity.getCardNo());
+			updateEntity.setEthnic(entity.getEthnic());
+			updateEntity.setName(entity.getName());
+			updateEntity.setSex(entity.getSex());
+			// 删除掉附件
+			attachmentService.deleteAttachment(updateEntity.getId());
+		} else {
+			updateEntity = entity;
+		}
+		this.addEntity(updateEntity);
+		entity.setId(updateEntity.getId());
 	}
 
 	public void delEntity(String ids) {

@@ -3,6 +3,7 @@ package com.ibm.cdl.manage.service;
 import com.ibm.cdl.manage.pojo.IdCard;
 import com.ibm.cdl.manage.pojo.User;
 import com.ibm.core.orm.Page;
+
 import java.util.List;
 
 public interface IdCardService {
@@ -30,7 +31,13 @@ public interface IdCardService {
 	/**
 	 * 添加实体
 	 */
-	void addEntity(IdCard image);
+	void addEntity(IdCard entity);
+
+	/**
+	 * 添加或者更新实体
+	 * @param entity
+	 */
+	void save(IdCard entity);
 
 	/**
 	 * 删除实体

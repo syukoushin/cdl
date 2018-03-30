@@ -84,8 +84,8 @@ public class AttachmentServiceImpl implements AttachmentService {
 	 * @param businessId
 	 * @return
 	 */
-	public boolean deleteAttachment(String businessId) {
-		return false;
+	public void deleteAttachment(String businessId) {
+		attachmentDao.deleteBySql("delete from attachment where BUSINESS_ID ='" + businessId+"'");
 	}
 
 	private static String createNewFile(File file,String newFileName,String filePath,String createUser) {

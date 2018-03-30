@@ -1,5 +1,6 @@
 package com.ibm.cdl.manage.service.impl;
 
+import com.ibm.cdl.attachment.service.AttachmentService;
 import com.ibm.cdl.manage.dao.LicenseDao;
 import com.ibm.cdl.manage.pojo.License;
 import com.ibm.cdl.manage.pojo.User;
@@ -27,6 +28,8 @@ public class LicenseServiceImpl implements LicenseService {
 	private LicenseDao licenseDao;
 	@Autowired
 	private DmsDataSyncService dmsDataSyncService;
+	@Autowired
+	private AttachmentService attachmentService;
 
 	public Page<License> findPageForClient(License entity, Page<License> page) {
 		StringBuilder hql = new StringBuilder();
@@ -197,12 +200,27 @@ public class LicenseServiceImpl implements LicenseService {
 	public String save(License entity){
 
 		String flag ="";
-
+		License updateEntity = new License();
 		//判断之前是否上传过该车架号的信息
-		List<License> exitList = licenseDao.findBy("carNo",entity.getCardNo());
+		List<License> exitList = licenseDao.findBy("carNo",entity.getCarNo());
 		if(exitList != null && exitList.size() > 0){
-			flag = "3";
-			return flag;
+			License temp = exitList.get(0);
+			updateEntity = licenseDao.get(temp.getId());
+			updateEntity.setCreateUser(entity.getCreateUser());
+			updateEntity.setPassDate(entity.getPassDate());
+			updateEntity.setRegistDate(entity.getRegistDate());
+			updateEntity.setAddress(entity.getAddress());
+			updateEntity.setBandNo(entity.getBandNo());
+			updateEntity.setCardNo(entity.getCardNo());
+			updateEntity.setCarType(entity.getCarType());
+			updateEntity.setEnginNo(entity.getEnginNo());
+			updateEntity.setName(entity.getName());
+			updateEntity.setUseType(entity.getUseType());
+			updateEntity.setCarNo(entity.getCarNo());
+			// 删除掉附件
+			attachmentService.deleteAttachment(updateEntity.getId());
+		} else {
+			updateEntity = entity;
 		}
 
 		// 保存之前先与dms验证是否实销
@@ -215,8 +233,8 @@ public class LicenseServiceImpl implements LicenseService {
 			String toDms = dmsDataSyncService.pushLicenseDataToDms(licensesList);
 			// 推送到dms成功的场合
 			if("0".equals(toDms)){
-				entity.setDmsFlag("1");
-				this.addEntity(entity);
+				updateEntity.setDmsFlag("1");
+				this.addEntity(updateEntity);
 			} else {
 				// 推送dms失败
 				flag = "2";
@@ -225,6 +243,7 @@ public class LicenseServiceImpl implements LicenseService {
 			// dms检测失败
 			flag ="1";
 		}
+		entity.setId(updateEntity.getId());
 		return flag;
 	}
 	public void delEntity(String ids) {

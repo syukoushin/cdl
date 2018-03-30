@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -345,7 +346,9 @@ public class ExportExcel {
 					cellFormatString = "0.00";
 				}else if(val instanceof Date) {
 					cell.setCellValue((Date) val);
-					cellFormatString = "yyyy-MM-dd HH:mm";
+					cellFormatString = "yyyy-MM-dd";
+				} else if(val instanceof BigDecimal){
+					cell.setCellValue(val.toString());
 				}else {
 					cell.setCellValue((String)Class.forName(this.getClass().getName().replaceAll(this.getClass().getSimpleName(), 
 						"fieldtype."+val.getClass().getSimpleName()+"Type")).getMethod("setValue", Object.class).invoke(null, val));

@@ -5,14 +5,13 @@ import com.ibm.core.util.excel.annotation.ExcelField;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * 发票实体类
  * @author zhuxiangxin
  *
  */
-public class Invoice implements Serializable {
+public class InvoiceExport implements Serializable {
 	/**
 	 * 
 	 */
@@ -20,7 +19,7 @@ public class Invoice implements Serializable {
 	private String id;
 	// 开票日期
 	@ExcelField(title="开票日期", align=2, sort=1)
-	private Date printDate;
+	private String printDate;
 	// 发票号码
 	@ExcelField(title="发票号码", align=2, sort=2)
 	private String number;
@@ -87,11 +86,11 @@ public class Invoice implements Serializable {
 		this.number = number;
 	}
 
-	public Date getPrintDate() {
+	public String getPrintDate() {
 		return printDate;
 	}
 
-	public void setPrintDate(Date printDate) {
+	public void setPrintDate(String printDate) {
 		this.printDate = printDate;
 	}
 

@@ -1,5 +1,6 @@
 package com.ibm.cdl.manage.service.impl;
 
+import com.ibm.cdl.attachment.service.AttachmentService;
 import com.ibm.cdl.manage.dao.BusinessLicenseDao;
 import com.ibm.cdl.manage.pojo.BusinessLicense;
 import com.ibm.cdl.manage.pojo.User;
@@ -25,6 +26,8 @@ public class BusinessLicenseServiceImpl implements BusinessLicenseService {
 
 	@Autowired
 	private  UserService userService;
+	@Autowired
+	private AttachmentService attachmentService;
 
 	/**
 	 * 分页获取历史记录（客户端用）
@@ -190,6 +193,29 @@ public class BusinessLicenseServiceImpl implements BusinessLicenseService {
 		int start = Page.getStartOfPage(page.getPageNo(), page.getPageSize());
 		Page.setPageValue(page, start, totalCount, result);
 		return page;
+	}
+
+	public  void  save(BusinessLicense entity){
+		BusinessLicense updateEntity = new BusinessLicense();
+		// 判断是不是上传过
+		List<BusinessLicense> entityList = businessLicenseDao.findBy("regNumber",entity.getRegNumber());
+		if(entityList != null && entityList.size() > 0){
+			BusinessLicense temp = entityList.get(0);
+			updateEntity = businessLicenseDao.get(temp.getId());
+			updateEntity.setRegNumber(entity.getRegNumber());
+			updateEntity.setCreateUser(entity.getCreateUser());
+			updateEntity.setAddress(entity.getAddress());
+			updateEntity.setCreditCode(entity.getCreditCode());
+			updateEntity.setEndDate(entity.getEndDate());
+			updateEntity.setIncorporator(entity.getIncorporator());
+			updateEntity.setName(entity.getName());
+			// 删除掉附件
+			attachmentService.deleteAttachment(updateEntity.getId());
+		} else {
+			updateEntity = entity;
+		}
+		this.addEntity(updateEntity);
+		entity.setId(updateEntity.getId());
 	}
 
 	/**

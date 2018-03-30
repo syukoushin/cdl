@@ -18,7 +18,7 @@ public interface AttachmentService   {
 
 	String saveAttachment(String businessId,String createUser,File file,String fileName,String fileType);
 
-	boolean deleteAttachment(String businessId);
+	void deleteAttachment(String businessId);
 
 	List<Attachment> findAttachmentsByBusinessId(String id);
 }

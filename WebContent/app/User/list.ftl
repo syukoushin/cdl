@@ -31,7 +31,7 @@
 									<table id="disTable" border="0" class="ranking_table">
 										  <thead>
 										    <tr>
-										      <th>序号</th><th>姓名</th><th>操作</th>
+										      <th>序号</th><th>用户名</th><th>姓名</th><th>账号类别</th><th>操作</th>
 										    </tr>
 										  </thead>
 									</table>
@@ -92,7 +92,9 @@
 		{{each(i,item) result}}
 			<tr style="font-family:'微软雅黑';">
 				<td>{{= i + 1}}</td>
+				<td>{{= item.userCode}}</td>
                 <td>{{= item.userName}}</td>
+                <td>{{if item.type=="1"}}客户端{{else}}管理员{{/if}}</td>
                 <td style="font-family:'微软雅黑';">
                 	<a href="javascript:void(0)" onclick="rePassword('{{= item.id}}')" class="hover_a" style="margin-right:10px;" title="重置密码">
                 		<img src="/cdl/images/cms/small_icon_77.png" style="border-radius:0; width:13px; height:13px;">
@@ -116,7 +118,7 @@
 		var param ={};
 		param["id"]=id;
 		$.ajax({
-            url: '${base}/manage/User_ajaxResetPwd.do',
+            url: '${base}/manage/User_modifyPwd.do',
             type: "post",
             data: param,
             dataType: 'json', //返回值类型 一般设置为json

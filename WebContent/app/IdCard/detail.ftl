@@ -70,7 +70,7 @@
 								</tr>
 								<tr><td class="span_tdl siyuannormal">生日：</td>
 									<td class="span_tdr siyuannormal">
-										${entity.birthday?if_exists}
+									${entity.birthDay?string("yyyy-MM-dd")}
 									</td>
 								</tr>
                                 <tr ><td class="span_tdl siyuannormal">名族：</td>

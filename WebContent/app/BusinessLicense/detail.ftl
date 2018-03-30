@@ -93,7 +93,7 @@
 								<#if attachmentList?has_content>
 									<tr><td class="span_tdl siyuannormal">营业执照图片：</td>
 										<td class="span_tdr siyuannormal" style="position:relative;">
-											<#list attachmentList?if_exists as item>w
+											<#list attachmentList?if_exists as item>
                                                 <img width=100px height=100px src=${ Session.FILE_PATH}${item.storePath} onclick="showBigImg(this);">
 											</#list>
 										</td>

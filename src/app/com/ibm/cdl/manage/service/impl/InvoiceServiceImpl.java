@@ -1,5 +1,6 @@
 package com.ibm.cdl.manage.service.impl;
 
+import com.ibm.cdl.attachment.service.AttachmentService;
 import com.ibm.cdl.manage.dao.InvoiceDao;
 import com.ibm.cdl.manage.pojo.Invoice;
 import com.ibm.cdl.manage.pojo.User;
@@ -28,6 +29,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	private InvoiceDao invoiceDao;
 	@Autowired
 	private DmsDataSyncService dmsDataSyncService;
+	@Autowired
+	private AttachmentService attachmentService;
 
 	/**
 	 * 分页查询历史记录（客户端）
@@ -47,7 +50,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 		hql.append("  i.TAX AS tax,");
 		hql.append("  i.CREATE_TIME AS createTime,");
 		hql.append("  i.CREATE_USER AS createUser,");
-		hql.append("  a.STORE_PATH AS storePath");
+		hql.append("  a.STORE_PATH AS storePath,");
+		/** add by zhuxiangxin 新增字段 2018-03-25**/
+		hql.append(" i.BUYER_NAME AS buyerName,");
+		hql.append(" i.ID_CARD AS idCard,");
+		hql.append(" i.BAND_NO AS bandNo,");
+		hql.append(" i.OK_NO AS okNo,");
+		hql.append(" i.ENGIN_NO AS enginNo");
+		/** add end**/
 		hql.append(" from  ");
 
 		StringBuilder where = new StringBuilder();
@@ -190,26 +200,47 @@ public class InvoiceServiceImpl implements InvoiceService {
 		invoiceDao.save(entity);
 	}
 
+	public void updateEntity(Invoice entity){
+		invoiceDao.update(entity);
+	}
+
 	public String save(Invoice entity){
 		String flag = "";
 		//判断之前是否上传过该车架号的信息
 		List<Invoice> exitList = invoiceDao.findBy("frameNo",entity.getFrameNo());
+		Invoice updateEntity = new Invoice();
 		if(exitList != null && exitList.size() > 0){
-			flag = "3";
-			return flag;
+			Invoice temp  = exitList.get(0);
+			updateEntity = invoiceDao.get(temp.getId());
+			updateEntity.setIdCard(entity.getIdCard());
+			updateEntity.setBandNo(entity.getBandNo());
+			updateEntity.setBuyerName(entity.getBuyerName());
+			updateEntity.setCreateUser(entity.getCreateUser());
+			updateEntity.setPrintDate(entity.getPrintDate());
+			updateEntity.setEnginNo(entity.getEnginNo());
+			updateEntity.setFrameNo(entity.getFrameNo());
+			updateEntity.setInvoiceNo(entity.getInvoiceNo());
+			updateEntity.setName(entity.getName());
+			updateEntity.setNumber(entity.getNumber());
+			updateEntity.setOkNo(entity.getOkNo());
+			updateEntity.setTax(entity.getTax());
+			// 删除掉附件
+			attachmentService.deleteAttachment(updateEntity.getId());
+		} else {
+			updateEntity = entity;
 		}
 		// 保存之前先与dms验证是否实销
-		flag = dmsDataSyncService.checkVin(entity.getFrameNo());
+		flag = dmsDataSyncService.checkVin(updateEntity.getFrameNo());
 
 		// 实销的场合，正常保存
 		if("0".equals(flag)){
 			List<Invoice> invoiceList = new ArrayList<Invoice>();
-			invoiceList.add(entity);
+			invoiceList.add(updateEntity);
 			String toDms = dmsDataSyncService.pushInvoiceDataToDms(invoiceList);
 			// 推送到dms成功的场合
 			if("0".equals(toDms)){
-				entity.setDmsFlag("1");
-				this.addEntity(entity);
+				updateEntity.setDmsFlag("1");
+				this.addEntity(updateEntity);
 			} else {
 				// 推送dms失败
 				flag = "2";
@@ -218,6 +249,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			// dms检测失败
 			flag ="1";
 		}
+		entity.setId(updateEntity.getId());
 		return flag;
 	}
 
@@ -292,8 +324,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 		for(Map.Entry<String, Object> p : pMap.entrySet()){
 			query.setParameter(p.getKey(), p.getValue());
 		}
+		query.setResultTransformer(Transformers.aliasToBean(Invoice.class));
 		return query.list();
 		
 	}
+
 
 }

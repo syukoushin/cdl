@@ -23,7 +23,7 @@
         <property name="ethnic" type="java.lang.String">
             <column name="ETHNIC"/>
         </property>
-        <property name="birthDay" type="java.lang.String">
+        <property name="birthDay" type="java.util.Date">
             <column name="BIRTHDAY"/>
         </property>
         <property name="createUser" type="java.lang.String">

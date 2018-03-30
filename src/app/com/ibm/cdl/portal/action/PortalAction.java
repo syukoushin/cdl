@@ -13,6 +13,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -27,7 +28,7 @@ import java.util.List;
  * 客户端接口
  */
 public class PortalAction extends DefaultBaseAction {
-	
+	Logger logger = Logger.getLogger(PortalAction.class);
 	/**
 	 * 序列id
 	 */
@@ -50,8 +51,8 @@ public class PortalAction extends DefaultBaseAction {
 	private List<Attachment> attachments = new ArrayList<Attachment>();               //附件列表
 	private String resultJSON=null;
 
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd");
-	private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyy-mm-dd");
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyy-MM-dd");
 
 
     /**
@@ -164,6 +165,9 @@ public class PortalAction extends DefaultBaseAction {
 			license.setCardNo(cardNo);
 			license.setCarType(carType);
 			license.setEnginNo(enginNo);
+			logger.info("name:"+name+",cardNo:"+cardNo+","+"carType:"+carType+",address:"+address
+			+",bandNo:"+bandNo+",carNo:"+cardNo+",useType:"+useType+",enginNo:"+enginNo+",registDate:"+registDate
+			+",passDate:"+passDate+",createUser:"+createUser);
 			if(registDate.contains("-")){
 				license.setRegistDate(sdf2.parse(registDate));
 			} else {
@@ -219,6 +223,18 @@ public class PortalAction extends DefaultBaseAction {
     		String frameNo = getParameter("frameNo");
     		String tax = getParameter("tax");
     		String createUser = getParameter("createUser");
+			/** add  by zhuxiangxin 增加购买方名称、身份证/组织机构代码、厂牌型号、合格证号、发动机号码 字段 2018-03-25**/
+			// 购买方名称
+			String buyerName = getParameter("buyerName");
+			// 身份证/组织机构代码
+			String idCard = getParameter("idCard");
+			// 厂牌型号
+			String bandNo = getParameter("bandNo");
+			// 合格证号
+			String okNo = getParameter("okNo");
+			// 发动机号码
+			String enginNo = getParameter("enginNo");
+			/** add end **/
     		Invoice invoice = new Invoice();
     		invoice.setName(name);
 			if(printDate.contains("-")){
@@ -232,6 +248,13 @@ public class PortalAction extends DefaultBaseAction {
     		invoice.setTax(new BigDecimal(tax));
     		invoice.setCreateUser(createUser);
 			invoice.setDmsFlag("0");
+			/** add  by zhuxiangxin 增加购买方名称、身份证/组织机构代码、厂牌型号、合格证号、发动机号码 字段 2018-03-25**/
+			invoice.setBuyerName(buyerName);
+			invoice.setBandNo(bandNo);
+			invoice.setIdCard(idCard);
+			invoice.setOkNo(okNo);
+			invoice.setEnginNo(enginNo);
+			/** add end **/
     		String result = invoiceService.save(invoice);
 			if("0".equals(result)){
 				json.put("optSts", "0");
@@ -279,8 +302,12 @@ public class PortalAction extends DefaultBaseAction {
 			idCard.setEthnic(ethnic);
 			idCard.setCreateUser(createUser);
 			idCard.setCardNo(cardNo);
-			idCard.setBirthDay(birthday);
-			idCardService.addEntity(idCard);
+			if(birthday.contains("-")){
+				idCard.setBirthDay(sdf2.parse(birthday));
+			} else {
+				idCard.setBirthDay(sdf.parse(birthday));
+			}
+			idCardService.save(idCard);
 			json.put("optSts", "0");
 			json.put("objId", idCard.getId());
 			json.put("optMsg", "成功");
@@ -307,6 +334,7 @@ public class PortalAction extends DefaultBaseAction {
 			String regNumber = getParameter("regNumber");
 			String address = getParameter("address");
 			String endDate = getParameter("endDate");
+
 			String incorporator = getParameter("incorporator");
 			String createUser = getParameter("createUser");
 			BusinessLicense businessLicense = new BusinessLicense();
@@ -317,7 +345,7 @@ public class PortalAction extends DefaultBaseAction {
 			businessLicense.setEndDate(endDate);
 			businessLicense.setIncorporator(incorporator);
 			businessLicense.setCreateUser(createUser);
-			businessLicenseService.addEntity(businessLicense);
+			businessLicenseService.save(businessLicense);
 			json.put("optSts", "0");
 			json.put("objId", businessLicense.getId());
 			json.put("optMsg", "成功");

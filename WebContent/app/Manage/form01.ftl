@@ -67,7 +67,6 @@ function getParam(){
 	var param ={};
 	param["entity.cardNo"] = $("#cardNo").val();
 	param["entity.name"] = $("#licenseName").val();
-	console.log(param);
 	return param;
 }
 function getOrderData(param){
