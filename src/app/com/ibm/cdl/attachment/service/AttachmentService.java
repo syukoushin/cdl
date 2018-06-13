@@ -21,4 +21,16 @@ public interface AttachmentService   {
 	void deleteAttachment(String businessId);
 
 	List<Attachment> findAttachmentsByBusinessId(String id);
+
+	/**
+	 * 保存附件
+	 * @param tempFile
+	 * @param tempFileName
+	 * @param tmepFileType
+	 * @param folderName
+	 * @return
+	 */
+	public String saveAttachmentForApp(String bussinessId,String updateFlag,File tempFile,String tempFileName,
+									   String tmepFileType,String createUser);
+
 }

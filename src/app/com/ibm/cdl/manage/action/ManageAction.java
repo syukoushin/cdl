@@ -18,6 +18,7 @@ import net.sf.json.JsonConfig;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +37,10 @@ public class ManageAction extends DefaultBaseAction {
 	private AttachmentService attachmentService;
 	@Autowired
 	private LicenseService	licenseService;
-	
+
+	private File[] attachFile;                              //附件上传对象
+	private String[] attachFileFileName;                    //附件名称
+	private String[] attachFileContentType;                 //附件类型
 	private License entity = new License();
 	private Page<License> res = new Page<License>();   //分页对象
 	private String resultJSON=null;
@@ -61,6 +65,13 @@ public class ManageAction extends DefaultBaseAction {
 				getRequest().getSession().setAttribute("CURRENT_USER", user);
 				filePath = DataMapUtils.getDataMapSub(Constants.SYS_PARAMS,Constants.FILE_SERVER);
 				getRequest().getSession().setAttribute("FILE_PATH",filePath);
+
+				// 判断是不是管理员
+				if (Constants.USER_ADMIN.equals(user.getJobLevel())) {
+					getRequest().getSession().setAttribute("ROLE", "admin");
+				} else {
+					getRequest().getSession().setAttribute("ROLE","normal");
+				}
 				return  goAction("/manage/Manage_toList.do?tagTopFlag=dbgl&tagFlag=wdjs");
 			} else {
 				return returnScriptAlertWindow("用户名或密码错误");
@@ -81,6 +92,15 @@ public class ManageAction extends DefaultBaseAction {
     
     
     /**
+	 * 跳转到管理员页面
+	 * @return
+	 */
+	public String toAdmin(){
+		getSession().setAttribute("CURRENT_MENU",Constants.MENU_ADMIN);
+		return goUrl("admin");
+	}
+
+	/**
 	 * 跳转到订单列表页面
 	 * @return
 	 */
@@ -185,7 +205,36 @@ public class ManageAction extends DefaultBaseAction {
 		}
     	return null;
     }
-    
+
+	/**
+	 * ajax上传附件
+	 * @return
+	 */
+	public String ajaxUploadFile(){
+		JSONObject json = new JSONObject();
+		try{
+			String version = getParameter("version");
+			String updateFlag = getParameter("updateFlag");
+			if(attachFile != null && attachFile.length > 0){
+				User user = getSessionUser();
+				String attachId = attachmentService.saveAttachmentForApp(version,updateFlag,attachFile[0],
+						attachFileFileName[0],attachFileContentType[0],user.getUserCode());
+				json.put("fileName", attachFileFileName[0]);
+				json.put("attachId", attachId);
+				json.put("optSts", "1");
+				json.put("optMsg", "保存附件成功");
+			} else {
+				json.put("optSts", "0");
+				json.put("optMsg", "保存附件失败");
+			}
+		}catch(Exception e){
+			json.put("optSts", "0");
+			json.put("optMsg", "保存附件失败");
+		}finally{
+			render("text/html",json.toString());
+		}
+		return null;
+	}
     
 	public String getResultJSON() {
 		return resultJSON;
@@ -235,9 +284,28 @@ public class ManageAction extends DefaultBaseAction {
 		this.attachmentList = attachmentList;
 	}
 
-
-	public  static  void main(String[] args){
-		String t = String.valueOf(null);
-		System.out.print(t);
+	public File[] getAttachFile() {
+		return attachFile;
 	}
+
+	public void setAttachFile(File[] attachFile) {
+		this.attachFile = attachFile;
+	}
+
+	public String[] getAttachFileFileName() {
+		return attachFileFileName;
+	}
+
+	public void setAttachFileFileName(String[] attachFileFileName) {
+		this.attachFileFileName = attachFileFileName;
+	}
+
+	public String[] getAttachFileContentType() {
+		return attachFileContentType;
+	}
+
+	public void setAttachFileContentType(String[] attachFileContentType) {
+		this.attachFileContentType = attachFileContentType;
+	}
+
 }

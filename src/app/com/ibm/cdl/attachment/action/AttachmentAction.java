@@ -9,7 +9,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
+
 /**
  * 附件数据传递及请求处理类
  * @create.date: 2011-5-4 上午09:49:56
@@ -28,28 +31,7 @@ public class AttachmentAction extends DefaultBaseAction {
 	private String result;
 	private String courseItemId;
 	private String firstTitleType;
-	/**
-	 * 下载附件
-	 */
-	public String download(){
-		try{
-			String userCode = this.getSessionUser().getUserCode();//获取当前登录用户code	
-			String userName = this.getSessionUser().getUserName();//获取当前登录用户code	
-//			AssertUtils.hasText(attachment.getId() + "", "附件主键ID cat not be null");
-//			attachment = attachmentService.findAttachmentById(attachment.getId());
-//			fileName = new String(attachment.getRealName().getBytes("GBK"),"ISO8859-1");
-//			File file = new File(attachment.getStorePath()+File.separator+attachment.getStoreName());
-//			inputStream = new FileInputStream(file);
-			if(StringUtils.isNotEmpty(courseItemId)){
-				courseItemId = courseItemId.replace("^", "");
-			}
-//			moaLogService.saveLog(new MOALog(userCode,userName,courseItemId,firstTitleType,"download",userName + "下载了：【"+attachment.getRealName()+"】"));
-			return "download";
-		}catch (Exception e) {
-			log.error("系统找不到指定文件，文件或被删除", e);
-			return this.returnScriptAlertWindow("系统找不到指定文件，文件或被删除！");
-		}
-	}
+
 
 	/**
 	 * 删除附件

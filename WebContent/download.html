@@ -14,9 +14,26 @@
 		<link href="css/client/client.css" rel="stylesheet" type="text/css" />
 	</head>
 	<script>
+		$.ready()
+        {
+            $.ajax({
+                type: "POST",
+                url: "/cdl/portal/getVersion.do",
+                data: {},
+                dataType: "json",
+                success: function(data){
+                    if(data.optSts =='0'){
+						$("#version").html(data.version);
+						$("#path").html(data.obj.storePath);
+					}
+                },
+				complete:function () {
+                }
+            });
+        }
 		 //下载
 		 function download(){
-		 	document.location.href = "http://125.208.10.232:8081/cdlfile/ocr.apk";
+		 	document.location.href = "http://125.208.10.232:8081/cdlfile/"+$("#path").html();
 		 }
 	</script>
 	<!-- 集成微信扫描二维码样式 -->
@@ -34,9 +51,13 @@
 		<div class="wrap">
 			<h2 class="title_01">
 			<img src="images/client/download_pre.png" width="150" height="150" /></h2>
+			<label id="path" style="display: none"></label>
 			<table class="tb_01">
 				<tr>
 					<td><input name="androidLink" type="button" class="dowBtn01" value="Android" onclick="download();"/></td> 
+				</tr>
+				<tr>
+					<td>当前版本：<a id="version"> </a></td>
 				</tr>
 			</table>
 		</div>

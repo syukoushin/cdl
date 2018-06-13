@@ -2,6 +2,7 @@ package com.ibm.cdl.portal.action;
 
 import com.ibm.cdl.attachment.domain.Attachment;
 import com.ibm.cdl.attachment.service.AttachmentService;
+import com.ibm.cdl.datamap.action.DataMapUtils;
 import com.ibm.cdl.datamap.constants.Constants;
 import com.ibm.cdl.manage.pojo.*;
 import com.ibm.cdl.manage.service.*;
@@ -20,9 +21,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 客户端接口
@@ -54,6 +53,33 @@ public class PortalAction extends DefaultBaseAction {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyy-MM-dd");
 
+	/**
+	 * 获取版本号
+	 * @return
+	 */
+	public String getVersion(){
+		JSONObject json = new JSONObject();
+		try{
+			String version = DataMapUtils.getDataMapSub(Constants.SYS_PARAMS, Constants.VERSION);
+			String[] vers = version.split("-");
+			List<Attachment> attList = attachmentService.findAttachmentsByBusinessId(vers[0]+"-"+vers[1]);
+			if(attList == null || attList.size() <=0){
+			} else {
+				Attachment att = attList.get(0);
+				json.put("obj", att);
+			}
+			json.put("optSts", "0");
+			json.put("version", vers[1]);
+			json.put("optMsg", "成功！");
+		}catch(Exception e){
+			e.printStackTrace();
+			json.put("optSts", "1");
+			json.put("optMsg", "失败！");
+		}finally{
+			this.sendResponseMessage(json.toString());
+		}
+		return null;
+	}
 
     /**
      * app登录
@@ -73,6 +99,19 @@ public class PortalAction extends DefaultBaseAction {
 			User user = userService.getUserByUserCodeAndType(userCode,Constants.APP_USER);
 			if(user != null){
 				if(user.getPassword()!= null && password.equals(user.getPassword())){
+					// 查找最新的版本信息
+					String ver = DataMapUtils.getDataMapSub(Constants.SYS_PARAMS, Constants.VERSION);
+					String[] vers = ver.split("-");
+					Map<String, Object> map = new HashMap<String, Object>();
+					List<Attachment> attList = attachmentService.findAttachmentsByBusinessId(vers[0]+"-"+vers[1]);
+					if(attList == null || attList.size() <=0){
+					} else {
+						Attachment att = attList.get(0);
+						map.put("obj", att);
+					}
+					map.put("version", vers[1]);
+					map.put("updateFlag", vers[2]);
+					json.put("data",map);
 					json.put("optSts", "0");
 					json.put("optMsg", "登录成功");
 				} else {
@@ -467,6 +506,33 @@ public class PortalAction extends DefaultBaseAction {
 			json.put("optMsg", "保存附件失败");
 		}finally{
 			render("text/html",json.toString());
+		}
+		return null;
+	}
+
+	/**
+	 * 下载附件
+	 */
+	public String download(){
+		JSONObject json = new JSONObject();
+		try{
+			String userCode = this.getSessionUser().getUserCode();//获取当前登录用户code
+			String userName = this.getSessionUser().getUserName();//获取当前登录用户code
+			String bId = getParameter("businessId");
+			List<Attachment> attList = attachmentService.findAttachmentsByBusinessId(bId);
+			if(attList == null || attList.size() <=0){
+				json.put("optSts","1");
+				json.put("optMsg", "未找到资源");
+			} else {
+				Attachment att = attList.get(0);
+				json.put("data", att);
+				json.put("optSts","0");
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.sendResponseMessage(json.toString());
 		}
 		return null;
 	}

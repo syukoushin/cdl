@@ -60,6 +60,7 @@ public class Constants {
 	public static String MENU_USER = "user";
 
 	public static String MENU_GROUP ="group";
+	public static String MENU_ADMIN ="admin";
 
 	//附件访问相关
 	public static String FILE_SERVER = "FILE_SERVER";

@@ -30,6 +30,7 @@ public class DmsDataSyncServiceImpl implements DmsDataSyncService {
 	 * @return
 	 */
 	public String checkVin(String vin) {
+//		return "0";
 		String flag = "";
 		String username = DataMapUtils.getDataMapSub(Constants.DMS_INFO,Constants.DMS_USER_NAME);
 		String pwd = DataMapUtils.getDataMapSub(Constants.DMS_INFO,Constants.DMS_PASSWORD);
@@ -80,6 +81,7 @@ public class DmsDataSyncServiceImpl implements DmsDataSyncService {
 	 * @return
 	 */
 	public String pushInvoiceDataToDms(List<Invoice> invoiceList) {
+//		return "0";
 		String flag = "0";
 		String username = DataMapUtils.getDataMapSub(Constants.DMS_INFO,Constants.DMS_USER_NAME);
 		String pwd = DataMapUtils.getDataMapSub(Constants.DMS_INFO,Constants.DMS_PASSWORD);
@@ -145,6 +147,7 @@ public class DmsDataSyncServiceImpl implements DmsDataSyncService {
 	 * @return
 	 */
 	public String pushLicenseDataToDms(List<License> licenseList) {
+//		return "0";
 		String flag = "0";
 		String username = DataMapUtils.getDataMapSub(Constants.DMS_INFO,Constants.DMS_USER_NAME);
 		String pwd = DataMapUtils.getDataMapSub(Constants.DMS_INFO,Constants.DMS_PASSWORD);

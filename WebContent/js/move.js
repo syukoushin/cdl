@@ -36,6 +36,9 @@ function goBusinessLicense(){
 function goEnginner(){
 	window.location="../manage/User_toList.do";
 };
+function goAdmin() {
+	window.location="../manage/Manage_toAdmin.do";
+}
 function goDetail(id){
 	window.location ="../manage/Manage_toLicenseDetail.do?id="+id;
 };
